@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJCommerce SEO Backlink Strategy - Demo Presentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #1a1a2e; color: #fff; }
+
+        .slide {
+            width: 960px;
+            min-height: 540px;
+            margin: 40px auto;
+            background: #fff;
+            color: #333;
+            border-radius: 12px;
+            padding: 50px 60px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            page-break-after: always;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide-number {
+            position: absolute;
+            bottom: 20px;
+            right: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .brand-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #0066FF, #00C9A7);
+        }
+
+        /* Slide 1 - Title */
+        .slide-title {
+            background: linear-gradient(135deg, #0a1628 0%, #1a365d 50%, #0066FF 100%);
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-title h1 { font-size: 38px; font-weight: 700; margin-bottom: 10px; }
+        .slide-title h2 { font-size: 22px; font-weight: 300; color: #00C9A7; margin-bottom: 30px; }
+        .slide-title .subtitle { font-size: 16px; color: #a0aec0; margin-bottom: 5px; }
+        .slide-title .divider { width: 80px; height: 3px; background: #00C9A7; margin: 20px auto; }
+
+        /* General styles */
+        h1.slide-heading { font-size: 28px; color: #0a1628; margin-bottom: 30px; padding-bottom: 10px; border-bottom: 3px solid #0066FF; }
+        h2.section-heading { font-size: 20px; color: #0066FF; margin: 20px 0 10px; }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f0f7ff, #e8f4fd);
+            border-left: 4px solid #0066FF;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .alert-box {
+            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+            border-left: 4px solid #e53e3e;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .success-box {
+            background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+            border-left: 4px solid #00C9A7;
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        th {
+            background: #0a1628;
+            color: #fff;
+            padding: 10px 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        tr:nth-child(even) { background: #f7fafc; }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #0a1628, #1a365d);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .metric-card .number { font-size: 32px; font-weight: 700; color: #00C9A7; }
+        .metric-card .label { font-size: 12px; color: #a0aec0; margin-top: 5px; }
+
+        ul { margin: 10px 0 10px 25px; }
+        li { margin: 8px 0; font-size: 15px; line-height: 1.5; }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 15px 0;
+        }
+
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            margin: 12px 0;
+        }
+        .step-number {
+            background: #0066FF;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+        .step-content h3 { font-size: 15px; color: #0a1628; }
+        .step-content p { font-size: 13px; color: #666; margin-top: 3px; }
+
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .timeline-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+        }
+        .timeline-card.month1 { border-color: #0066FF; }
+        .timeline-card.month2 { border-color: #00C9A7; }
+        .timeline-card.month3 { border-color: #805ad5; }
+        .timeline-card h3 { font-size: 16px; margin-bottom: 10px; }
+        .timeline-card.month1 h3 { color: #0066FF; }
+        .timeline-card.month2 h3 { color: #00C9A7; }
+        .timeline-card.month3 h3 { color: #805ad5; }
+        .timeline-card ul { margin-left: 15px; }
+        .timeline-card li { font-size: 12px; margin: 5px 0; }
+
+        .pricing-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+        }
+        .pricing-card.recommended {
+            border-color: #0066FF;
+            background: linear-gradient(135deg, #f0f7ff, #e8f4fd);
+        }
+        .pricing-card h3 { font-size: 18px; margin-bottom: 5px; }
+        .pricing-card .price { font-size: 32px; font-weight: 700; color: #0066FF; margin: 10px 0; }
+        .pricing-card .period { font-size: 13px; color: #999; }
+
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .tag-blue { background: #e8f4fd; color: #0066FF; }
+        .tag-green { background: #c6f6d5; color: #276749; }
+        .tag-red { background: #ffe0e0; color: #e53e3e; }
+        .tag-purple { background: #e9d8fd; color: #6b46c1; }
+
+        .footer-note {
+            position: absolute;
+            bottom: 20px;
+            left: 60px;
+            font-size: 11px;
+            color: #999;
+        }
+
+        /* Slide - CTA */
+        .slide-cta {
+            background: linear-gradient(135deg, #0a1628 0%, #1a365d 50%, #0066FF 100%);
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .slide-cta h1 { font-size: 36px; margin-bottom: 15px; }
+        .slide-cta p { font-size: 18px; color: #a0aec0; margin: 5px 0; }
+
+        @media print {
+            body { background: #fff; }
+            .slide { box-shadow: none; margin: 0; page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== SLIDE 1: TITLE ==================== -->
+<div class="slide slide-title">
+    <p class="subtitle">Prepared for</p>
+    <h1>OJCommerce</h1>
+    <div class="divider"></div>
+    <h2>SEO Backlink Acquisition & Referral Traffic Growth</h2>
+    <p class="subtitle" style="margin-top: 10px; font-size: 14px;">https://www.ojcommerce.com</p>
+    <p class="subtitle" style="margin-top: 30px;">Strategic Proposal & Demo</p>
+    <p class="subtitle">Friday, February 20, 2026 | 3:30 PM</p>
+    <p class="subtitle" style="margin-top: 20px; font-size: 14px;">Presented by: Shamique</p>
+    <div class="slide-number">1</div>
+</div>
+
+<!-- ==================== SLIDE 2: AGENDA ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Agenda</h1>
+
+    <div class="process-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+            <h3>Understanding OJCommerce</h3>
+            <p>Your business, goals, and current challenges</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+            <h3>Current State Audit</h3>
+            <p>122,173 organic users, 0.28% referral traffic — where you stand today</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+            <h3>Competitor Analysis</h3>
+            <p>Rooms To Go, Wayfair, Ashley Furniture, Bed Bath & Beyond, One Stop Bedroom</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+            <h3>Backlink Gap & Opportunities</h3>
+            <p>Sites linking to your competitors but NOT to OJCommerce</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">5</div>
+        <div class="step-content">
+            <h3>Our Strategy & Methodology</h3>
+            <p>100% white-hat, DR 60+ only, per-link model, pre-approval process</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">6</div>
+        <div class="step-content">
+            <h3>Anchor Text & Link Strategy</h3>
+            <p>40% brand/homepage allocation, natural anchor text distribution</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">7</div>
+        <div class="step-content">
+            <h3>90-Day Roadmap</h3>
+            <p>Immediate start — month-by-month execution plan</p>
+        </div>
+    </div>
+    <div class="process-step">
+        <div class="step-number">8</div>
+        <div class="step-content">
+            <h3>Reporting, Pricing & Next Steps</h3>
+            <p>Twice-weekly updates, per-link pricing, and kickoff plan</p>
+        </div>
+    </div>
+    <div class="slide-number">2</div>
+</div>
+
+<!-- ==================== SLIDE 3: UNDERSTANDING THE CHALLENGE ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Understanding OJCommerce's Challenge</h1>
+
+    <div class="two-col">
+        <div>
+            <h2 class="section-heading">The Problem</h2>
+            <div class="alert-box">
+                <ul style="margin-left: 15px;">
+                    <li>Referral traffic is only <strong>0.28%</strong> (~342 visitors/month) — nearly zero</li>
+                    <li>Previous agencies focused on <strong>volume over quality</strong> — delivering low-quality backlinks</li>
+                    <li><strong>No measurable referral traffic impact</strong> from past efforts</li>
+                    <li><strong>No existing backlinks or partnerships</strong> to build on</li>
+                    <li>Competitors like Wayfair & Rooms To Go dominate with massive link profiles</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <h2 class="section-heading">The Opportunity</h2>
+            <div class="success-box">
+                <ul style="margin-left: 15px;">
+                    <li><strong>122,173 monthly organic users</strong> — strong foundation to build on</li>
+                    <li>Furniture eCommerce market is growing rapidly in the US</li>
+                    <li><strong>5 competitors identified</strong> — rich backlink gap opportunities to exploit</li>
+                    <li><strong>Clean slate</strong> — no Google penalties, no toxic links to clean up</li>
+                    <li>Per-link model ensures every dollar = quality result</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 20px;">
+        <strong>Our Goal:</strong> Grow referral traffic from <strong>0.28% to 5–10%</strong> (from ~342 to 6,100–12,200 users/month) by acquiring DR 60+ furniture-relevant backlinks from sites with real, verifiable US traffic.
+    </div>
+    <div class="slide-number">3</div>
+</div>
+
+<!-- ==================== SLIDE 4: CURRENT STATE AUDIT ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">OJCommerce — Current State Audit</h1>
+    <p style="color: #666; font-size: 13px; margin-bottom: 15px;">Website: https://www.ojcommerce.com | Market: United States</p>
+
+    <div class="metric-grid">
+        <div class="metric-card">
+            <div class="number">122,173</div>
+            <div class="label">MONTHLY ORGANIC USERS</div>
+        </div>
+        <div class="metric-card">
+            <div class="number">0.28%</div>
+            <div class="label">CURRENT REFERRAL TRAFFIC</div>
+        </div>
+        <div class="metric-card">
+            <div class="number">~342</div>
+            <div class="label">REFERRAL VISITORS / MONTH</div>
+        </div>
+    </div>
+
+    <div class="metric-grid">
+        <div class="metric-card" style="background: linear-gradient(135deg, #1a365d, #2a4a7f);">
+            <div class="number" style="color: #ffd700;">5–10%</div>
+            <div class="label">TARGET REFERRAL TRAFFIC</div>
+        </div>
+        <div class="metric-card" style="background: linear-gradient(135deg, #1a365d, #2a4a7f);">
+            <div class="number" style="color: #ffd700;">6,100–12,200</div>
+            <div class="label">TARGET REFERRAL VISITORS / MONTH</div>
+        </div>
+        <div class="metric-card" style="background: linear-gradient(135deg, #1a365d, #2a4a7f);">
+            <div class="number" style="color: #ffd700;">DR 60+</div>
+            <div class="label">MINIMUM BACKLINK THRESHOLD</div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Current Status</th>
+                <th>Detail</th>
+                <th>Implication</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Existing Backlinks</strong></td>
+                <td>None reported</td>
+                <td>Building from scratch — clean slate</td>
+            </tr>
+            <tr>
+                <td><strong>Blog Content</strong></td>
+                <td>Limited — mainly commercial & category pages</td>
+                <td>Need to create content for outreach</td>
+            </tr>
+            <tr>
+                <td><strong>Google Penalties</strong></td>
+                <td>No known manual penalties</td>
+                <td>Clean record — no risk factors</td>
+            </tr>
+            <tr>
+                <td><strong>Geographic Focus</strong></td>
+                <td>United States (nationwide)</td>
+                <td>US-focused outreach required</td>
+            </tr>
+            <tr>
+                <td><strong>GA4 / GSC Access</strong></td>
+                <td>Reports to be shared after project starts</td>
+                <td>Will set up tracking in Week 1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="alert-box">
+        <strong>Key Finding:</strong> OJCommerce has strong organic traffic (122K users) but near-zero referral traffic (0.28%). With no existing backlinks, this is a <strong>17x to 35x growth opportunity</strong> waiting to be captured.
+    </div>
+    <div class="slide-number">4</div>
+</div>
+
+<!-- ==================== SLIDE 5: COMPETITOR ANALYSIS ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Competitor Backlink Comparison</h1>
+    <p style="color: #666; font-size: 13px; margin-bottom: 10px;">All 5 competitors confirmed by Alkesh — same furniture/home niche</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Competitor</th>
+                <th>Website</th>
+                <th>Domain Rating</th>
+                <th>Total Backlinks</th>
+                <th>Referring Domains</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: #e8f4fd;">
+                <td><strong>OJCommerce</strong></td>
+                <td>ojcommerce.com</td>
+                <td style="color: #e53e3e; font-weight: 700;">Audit Needed</td>
+                <td style="color: #e53e3e; font-weight: 700;">Audit Needed</td>
+                <td style="color: #e53e3e; font-weight: 700;">Audit Needed</td>
+            </tr>
+            <tr>
+                <td><strong>Rooms To Go</strong></td>
+                <td>roomstogo.com</td>
+                <td style="color: #38a169; font-weight: 700;">66</td>
+                <td style="color: #38a169; font-weight: 700;">158K</td>
+                <td style="color: #38a169; font-weight: 700;">6.6K</td>
+            </tr>
+            <tr>
+                <td><strong>Wayfair</strong></td>
+                <td>wayfair.com</td>
+                <td style="color: #38a169; font-weight: 700;">Run Ahrefs</td>
+                <td style="color: #38a169; font-weight: 700;">Run Ahrefs</td>
+                <td style="color: #38a169; font-weight: 700;">Run Ahrefs</td>
+            </tr>
+            <tr>
+                <td><strong>Ashley Furniture</strong></td>
+                <td>ashleyfurniture.com</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+            </tr>
+            <tr>
+                <td><strong>Bed Bath & Beyond</strong></td>
+                <td>bedbathandbeyond.com</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+            </tr>
+            <tr>
+                <td><strong>One Stop Bedroom</strong></td>
+                <td>onestopbedrooms.com</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+                <td>Run Ahrefs</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight-box">
+        <strong>Insight:</strong> Rooms To Go alone has <strong>158K backlinks</strong> from <strong>6.6K referring domains</strong> with a DR of 66. They receive links from Wikipedia (DR 97), Synchrony (DR 87), and StarWars.com (DR 83). OJCommerce needs to close this gap strategically.
+    </div>
+
+    <div class="alert-box" style="font-size: 13px;">
+        <strong>Action Required:</strong> Run all competitor URLs through Ahrefs Backlink Checker before Friday and fill in "Run Ahrefs" cells with real data. This will make the demo much more impactful.
+    </div>
+    <div class="slide-number">5</div>
+</div>
+
+<!-- ==================== SLIDE 6: BACKLINK GAP ANALYSIS ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Backlink Gap — Untapped Opportunities</h1>
+    <p style="color: #666; font-size: 14px; margin-bottom: 15px;">Sites linking to competitors but NOT to OJCommerce = immediate outreach targets</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Referring Domain</th>
+                <th>DR</th>
+                <th>Monthly Traffic</th>
+                <th>Links to Which Competitor?</th>
+                <th>Links to OJCommerce?</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>synchrony.com</strong></td>
+                <td><span class="tag tag-green">87</span></td>
+                <td>2.5M+</td>
+                <td style="color: #38a169; font-weight: 700;">Yes — Rooms To Go</td>
+                <td style="color: #e53e3e; font-weight: 700;">No</td>
+            </tr>
+            <tr>
+                <td><strong>wikipedia.org</strong></td>
+                <td><span class="tag tag-green">97</span></td>
+                <td>8B+</td>
+                <td style="color: #38a169; font-weight: 700;">Yes — Rooms To Go</td>
+                <td style="color: #e53e3e; font-weight: 700;">No</td>
+            </tr>
+            <tr>
+                <td><strong>concoracredit.com</strong></td>
+                <td><span class="tag tag-blue">53</span></td>
+                <td>Check Ahrefs</td>
+                <td style="color: #38a169; font-weight: 700;">Yes — Rooms To Go</td>
+                <td style="color: #e53e3e; font-weight: 700;">No</td>
+            </tr>
+            <tr>
+                <td><strong>starwars.com</strong></td>
+                <td><span class="tag tag-green">83</span></td>
+                <td>Millions</td>
+                <td style="color: #38a169; font-weight: 700;">Yes — Rooms To Go</td>
+                <td style="color: #e53e3e; font-weight: 700;">No</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="text-align: center; color: #999; font-style: italic;">Additional gap opportunities to be identified via Ahrefs Link Intersect tool for all 5 competitors</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="success-box">
+        <strong>Opportunity:</strong> These sites already link to furniture brands in the same niche. They are <strong>high-probability targets</strong> for OJCommerce outreach. Using Ahrefs "Link Intersect" across all 5 competitors will uncover dozens more DR 60+ opportunities.
+    </div>
+
+    <div class="highlight-box" style="font-size: 13px;">
+        <strong>Important:</strong> All backlink prospects will be filtered to meet OJCommerce's strict criteria — <strong>DR 60+ only</strong>, real US traffic, furniture/home niche relevant, no political/adult/gambling sites.
+    </div>
+    <div class="slide-number">6</div>
+</div>
+
+<!-- ==================== SLIDE 7: OUR STRATEGY ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Our Strategy & Methodology</h1>
+    <p style="color: #0066FF; font-weight: 600; font-size: 15px; margin-bottom: 20px;">100% White-Hat | Google Compliant | DR 60+ Only | Quality-First | Per-Link Model</p>
+
+    <div class="two-col">
+        <div>
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Research & Prospecting</h3>
+                    <p>Identify 100+ DR 60+ furniture-relevant domains in the US using Ahrefs, SEMrush, and manual research</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Quality Vetting</h3>
+                    <p>Filter every prospect: DR 60+, real US traffic (1,000+ daily), furniture/home niche, no political/adult/gambling</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Client Pre-Approval</h3>
+                    <p>Present vetted prospects to OJCommerce for approval BEFORE any outreach — you control what gets pursued</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Personalized Outreach</h3>
+                    <p>Craft custom pitches — guest posts, editorial features, resource placements, digital PR</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="process-step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <h3>Content Creation</h3>
+                    <p>Write high-quality content with clean, professional, trust-driven, value-focused tone matching OJCommerce brand</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <h3>Link Placement & QA</h3>
+                    <p>Natural anchor text using "OJCommerce" / "OJ Commerce" variations, 40% homepage + 60% category pages</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <h3>Track & Report</h3>
+                    <p>Monitor referral traffic via GA4 reports, deliver twice-weekly updates (as requested)</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">8</div>
+                <div class="step-content">
+                    <h3>Optimize & Scale</h3>
+                    <p>Double down on high-performing channels, scale to new DR 60+ prospects</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 15px;">
+        <strong>Link Types We Target:</strong>
+        <span class="tag tag-blue">Guest Posts</span>
+        <span class="tag tag-green">Editorial Mentions</span>
+        <span class="tag tag-purple">Resource Pages</span>
+        <span class="tag tag-blue">Digital PR</span>
+        <span class="tag tag-green">HARO / Expert Quotes</span>
+        <span class="tag tag-purple">Niche Directories (DR 60+)</span>
+    </div>
+    <div class="slide-number">7</div>
+</div>
+
+<!-- ==================== SLIDE 8: OUTREACH EXAMPLES ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Outreach Approach — Sample Strategy</h1>
+
+    <div class="two-col">
+        <div>
+            <h2 class="section-heading">Sample Guest Post Topics</h2>
+            <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Tone: Clean, professional, trust-driven, value-focused (per OJCommerce brand guidelines)</p>
+            <div style="background: #f7fafc; padding: 15px; border-radius: 8px;">
+                <ul>
+                    <li>"How to Choose the Perfect Sofa for Small Apartments"</li>
+                    <li>"2026 Home Office Furniture Trends in the US"</li>
+                    <li>"Solid Wood vs Engineered Wood: A Buyer's Guide"</li>
+                    <li>"10 Living Room Design Ideas on a Budget"</li>
+                    <li>"The Complete Bedroom Furniture Buying Guide"</li>
+                </ul>
+            </div>
+
+            <h2 class="section-heading" style="margin-top: 15px;">Target Publications (US-focused)</h2>
+            <div style="background: #f7fafc; padding: 15px; border-radius: 8px;">
+                <ul>
+                    <li>Home decor & interior design blogs (DR 60+)</li>
+                    <li>US lifestyle magazines (online editions)</li>
+                    <li>Real estate & home improvement sites</li>
+                    <li>Furniture review & comparison sites</li>
+                    <li>DIY and home renovation communities</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <h2 class="section-heading">Sample Outreach Email</h2>
+            <div style="background: #f7fafc; padding: 15px; border-radius: 8px; font-size: 12px; line-height: 1.7; border: 1px solid #e2e8f0;">
+                <p><strong>Subject:</strong> Content Collaboration Idea</p>
+                <br>
+                <p>Hi [Editor Name],</p>
+                <br>
+                <p>I've been following [Site Name] and loved your recent piece on [specific topic].</p>
+                <br>
+                <p>I'm reaching out from <strong>OJCommerce</strong> — a growing US-based online furniture retailer. We'd love to contribute a high-quality article that your audience would find valuable.</p>
+                <br>
+                <p>A few ideas:</p>
+                <p>1. "How to Furnish Your First Home on a Budget"</p>
+                <p>2. "Furniture Trends Shaping 2026 American Homes"</p>
+                <br>
+                <p>Happy to tailor the topic to your editorial calendar.</p>
+                <br>
+                <p>Best regards,<br>Shamique</p>
+            </div>
+
+            <div class="alert-box" style="margin-top: 10px; font-size: 12px;">
+                <strong>Niches We AVOID (per Alkesh):</strong> Political, adult, gambling, or any unrelated niches
+            </div>
+            <div class="success-box" style="margin-top: 10px; font-size: 13px;">
+                <strong>Expected Response Rate:</strong> 8-12% (industry benchmark: 5-8%)
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">8</div>
+</div>
+
+<!-- ==================== SLIDE 9: ANCHOR TEXT STRATEGY ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Anchor Text & Link Placement Strategy</h1>
+    <p style="color: #666; font-size: 13px; margin-bottom: 10px;">Alkesh specified: 40% focused on brand + homepage authority | Brand names: "OJCommerce" and "OJ Commerce"</p>
+
+    <div class="two-col">
+        <div>
+            <h2 class="section-heading">Anchor Text Distribution</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">Natural, diversified anchor text avoids over-optimization penalties</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Anchor Type</th>
+                        <th>Target %</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Branded</td>
+                        <td><strong>35-40%</strong></td>
+                        <td>"OJCommerce", "OJ Commerce"</td>
+                    </tr>
+                    <tr>
+                        <td>Branded + Keyword</td>
+                        <td><strong>15-20%</strong></td>
+                        <td>"OJCommerce furniture", "OJ Commerce bedroom sets"</td>
+                    </tr>
+                    <tr>
+                        <td>Exact Match Keyword</td>
+                        <td><strong>5-10%</strong></td>
+                        <td>"buy dining table online", "furniture store USA"</td>
+                    </tr>
+                    <tr>
+                        <td>Partial Match</td>
+                        <td><strong>10-15%</strong></td>
+                        <td>"affordable bedroom furniture", "quality home furniture"</td>
+                    </tr>
+                    <tr>
+                        <td>Generic</td>
+                        <td><strong>5-10%</strong></td>
+                        <td>"click here", "learn more", "visit website"</td>
+                    </tr>
+                    <tr>
+                        <td>Naked URL</td>
+                        <td><strong>10-15%</strong></td>
+                        <td>"ojcommerce.com", "www.ojcommerce.com"</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2 class="section-heading">Link Target Distribution</h2>
+            <p style="font-size: 13px; color: #666; margin-bottom: 10px;">As specified: 40% homepage + brand authority</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Target Page</th>
+                        <th>Link Share</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background: #e8f4fd;">
+                        <td><strong>Homepage (brand authority)</strong></td>
+                        <td><strong style="color: #0066FF; font-size: 16px;">40%</strong> <span style="font-size: 11px; color: #999;">— Client specified</span></td>
+                    </tr>
+                    <tr>
+                        <td>Category Pages (bedroom, living, dining)</td>
+                        <td><strong>30-35%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Blog / Content Pages</td>
+                        <td><strong>15-20%</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Top Product Pages</td>
+                        <td><strong>5-10%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="highlight-box" style="margin-top: 15px; font-size: 13px;">
+                <strong>Why this matters:</strong> Natural anchor text and page distribution signals to Google that links are editorially earned, not manufactured. The 40% homepage focus builds strong brand authority.
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">9</div>
+</div>
+
+<!-- ==================== SLIDE 10: 90-DAY ROADMAP ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">90-Day Execution Roadmap</h1>
+    <p style="color: #00C9A7; font-weight: 600; font-size: 14px; margin-bottom: 15px;">Start Date: Immediate (as requested by Alkesh)</p>
+
+    <div class="timeline">
+        <div class="timeline-card month1">
+            <h3>Month 1: Foundation</h3>
+            <p style="font-size: 11px; color: #0066FF; margin-bottom: 8px;">WEEKS 1-4</p>
+            <ul>
+                <li>Complete backlink & site audit for ojcommerce.com</li>
+                <li>Competitor gap analysis (all 5 competitors)</li>
+                <li>Build prospect list (100+ DR 60+ targets)</li>
+                <li>Set up referral tracking (GA4 reports from client)</li>
+                <li>Begin outreach (30+ emails/week)</li>
+                <li>Secure first 3-5 approved placements</li>
+            </ul>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                <span class="tag tag-blue">Audit Report</span>
+                <span class="tag tag-blue">Strategy Doc</span>
+                <span class="tag tag-blue">Twice-Weekly Reports Begin</span>
+            </div>
+        </div>
+
+        <div class="timeline-card month2">
+            <h3>Month 2: Scale</h3>
+            <p style="font-size: 11px; color: #00C9A7; margin-bottom: 8px;">WEEKS 5-8</p>
+            <ul>
+                <li>Scale outreach (50+ emails/week)</li>
+                <li>Publish 3-5 guest posts on DR 60+ sites</li>
+                <li>Secure 8-12 quality backlinks</li>
+                <li>Launch digital PR / HARO initiatives</li>
+                <li>First referral traffic data visible</li>
+                <li>Optimize based on early results</li>
+            </ul>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                <span class="tag tag-green">Monthly Report</span>
+                <span class="tag tag-green">Referral Traffic Data</span>
+            </div>
+        </div>
+
+        <div class="timeline-card month3">
+            <h3>Month 3: Optimize</h3>
+            <p style="font-size: 11px; color: #805ad5; margin-bottom: 8px;">WEEKS 9-12</p>
+            <ul>
+                <li>Double down on highest-performing channels</li>
+                <li>Secure 10-15 quality DR 60+ backlinks</li>
+                <li>Measurable referral traffic growth</li>
+                <li>Brand visibility keyword improvements</li>
+                <li>Full performance review vs 5-10% target</li>
+                <li>Quarter 2 strategy planning</li>
+            </ul>
+            <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #e2e8f0;">
+                <span class="tag tag-purple">Full 90-Day Report</span>
+                <span class="tag tag-purple">Q2 Plan</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="success-box">
+        <strong>Expected 90-Day Outcomes:</strong> 20-30 DR 60+ backlinks acquired | DR improvement of 3-5 points | Referral traffic growth from 0.28% toward 2-3% | Brand visibility keyword ranking movement
+    </div>
+    <div class="slide-number">10</div>
+</div>
+
+<!-- ==================== SLIDE 11: REPORTING ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Reporting & Transparency</h1>
+    <p style="color: #00C9A7; font-weight: 600; font-size: 14px; margin-bottom: 15px;">Alkesh requested: Twice-weekly updates</p>
+
+    <div class="two-col">
+        <div>
+            <h2 class="section-heading">What We Report</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Report Item</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Backlink Log</td>
+                        <td>URL, anchor text, DR, traffic, link type, status</td>
+                    </tr>
+                    <tr>
+                        <td>Referral Traffic</td>
+                        <td>GA4 sessions, engagement, conversions per source</td>
+                    </tr>
+                    <tr>
+                        <td>Brand Visibility Keywords</td>
+                        <td>Position changes for target brand terms</td>
+                    </tr>
+                    <tr>
+                        <td>DR/DA Progress</td>
+                        <td>OJCommerce domain authority trend over time</td>
+                    </tr>
+                    <tr>
+                        <td>Outreach Pipeline</td>
+                        <td>Prospects contacted, response rate, conversion rate</td>
+                    </tr>
+                    <tr>
+                        <td>Risk Audit</td>
+                        <td>Toxic link check, Google compliance status</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2 class="section-heading">Communication Schedule</h2>
+            <div class="process-step">
+                <div class="step-number" style="background: #00C9A7;">T</div>
+                <div class="step-content">
+                    <h3>Tuesday Update</h3>
+                    <p>Outreach progress, responses received, links in pipeline, any blockers</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number" style="background: #00C9A7;">F</div>
+                <div class="step-content">
+                    <h3>Friday Update</h3>
+                    <p>Links acquired this week, referral traffic snapshot, next week plan</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number" style="background: #0066FF;">M</div>
+                <div class="step-content">
+                    <h3>Monthly Report</h3>
+                    <p>Comprehensive report with all metrics, analysis, and next-month strategy</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number" style="background: #805ad5;">M</div>
+                <div class="step-content">
+                    <h3>Monthly Review Call</h3>
+                    <p>30-min live call to discuss results, approve next prospects, align strategy</p>
+                </div>
+            </div>
+
+            <div class="highlight-box" style="margin-top: 10px; font-size: 13px;">
+                <strong>Tools:</strong> GA4 (client reports), Google Search Console (client reports), Ahrefs, Shared Google Sheet dashboard
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">11</div>
+</div>
+
+<!-- ==================== SLIDE 12: COMPLIANCE ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Quality Assurance & Compliance</h1>
+
+    <div class="two-col">
+        <div>
+            <h2 class="section-heading">What We DO</h2>
+            <div class="success-box">
+                <ul style="margin-left: 15px;">
+                    <li><strong>DR 60+ sites only</strong> — strict quality threshold as required</li>
+                    <li><strong>Editorial guest posts</strong> on real websites with real US traffic</li>
+                    <li><strong>HARO & journalist outreach</strong> for expert mentions</li>
+                    <li><strong>Resource page placements</strong> on furniture/home niche sites</li>
+                    <li><strong>Digital PR</strong> through newsworthy content</li>
+                    <li><strong>Pre-approval process</strong> — you approve every placement before we proceed</li>
+                    <li><strong>Natural anchor text</strong> using "OJCommerce" / "OJ Commerce" variations</li>
+                    <li><strong>Full compliance</strong> with Google Webmaster Guidelines</li>
+                </ul>
+            </div>
+        </div>
+        <div>
+            <h2 class="section-heading">What We NEVER Do</h2>
+            <div class="alert-box">
+                <ul style="margin-left: 15px;">
+                    <li><strong>Private Blog Networks (PBNs)</strong></li>
+                    <li><strong>Link farms</strong> or bulk link purchases</li>
+                    <li><strong>Spammy directories</strong> or low-quality submissions</li>
+                    <li><strong>Comment spam</strong> or forum spam</li>
+                    <li><strong>Hidden or cloaked links</strong></li>
+                    <li><strong>Political, adult, gambling</strong> or unrelated niche sites</li>
+                    <li><strong>Any site below DR 60</strong></li>
+                    <li><strong>Volume-over-quality approach</strong> (Alkesh's past frustration)</li>
+                    <li><strong>Any technique</strong> that risks a Google penalty</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top: 15px;">
+        <strong>Our Guarantee:</strong> Every backlink is from a <strong>real DR 60+ website</strong>, with real US traffic, editorially placed, furniture-niche relevant, and fully Google-compliant. <strong>You approve every placement before we proceed.</strong>
+    </div>
+    <div class="slide-number">12</div>
+</div>
+
+<!-- ==================== SLIDE 13: PRICING ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Per-Link Pricing Model</h1>
+    <p style="color: #666; font-size: 13px; margin-bottom: 10px;">As requested by Alkesh: No monthly retainer. Pay per approved, quality backlink.</p>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px;">
+        <div class="pricing-card">
+            <div style="background: #e8f4fd; color: #0066FF; padding: 5px 15px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 10px;">TIER 1</div>
+            <h3>DR 60–70</h3>
+            <div class="price">$[XXX]</div>
+            <div class="period">per approved backlink</div>
+            <div style="text-align: left; margin-top: 15px;">
+                <ul style="font-size: 12px;">
+                    <li>Prospect research & vetting</li>
+                    <li>Personalized outreach</li>
+                    <li>Content creation</li>
+                    <li>Link placement & verification</li>
+                    <li>Referral traffic tracking</li>
+                </ul>
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="tag tag-blue">Niche blogs, industry sites</span>
+            </div>
+        </div>
+        <div class="pricing-card recommended">
+            <div style="background: #0066FF; color: #fff; padding: 5px 15px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 10px;">TIER 2 — SWEET SPOT</div>
+            <h3>DR 70–80</h3>
+            <div class="price">$[XXX]</div>
+            <div class="period">per approved backlink</div>
+            <div style="text-align: left; margin-top: 15px;">
+                <ul style="font-size: 12px;">
+                    <li>Everything in Tier 1</li>
+                    <li>Premium content creation</li>
+                    <li>Higher authority targets</li>
+                    <li>Priority placement</li>
+                    <li>Detailed referral analytics</li>
+                </ul>
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="tag tag-green">Major publications, lifestyle magazines</span>
+            </div>
+        </div>
+        <div class="pricing-card">
+            <div style="background: #e9d8fd; color: #805ad5; padding: 5px 15px; border-radius: 12px; font-size: 12px; display: inline-block; margin-bottom: 10px;">TIER 3 — PREMIUM</div>
+            <h3>DR 80+</h3>
+            <div class="price">$[XXX]</div>
+            <div class="period">per approved backlink</div>
+            <div style="text-align: left; margin-top: 15px;">
+                <ul style="font-size: 12px;">
+                    <li>Everything in Tier 2</li>
+                    <li>Digital PR campaigns</li>
+                    <li>Elite site editorial features</li>
+                    <li>Maximum referral traffic potential</li>
+                    <li>Highest authority boost</li>
+                </ul>
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="tag tag-purple">Major news sites, elite domains</span>
+            </div>
+        </div>
+    </div>
+
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Engagement Detail</th>
+                <th>Terms</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Engagement Model</strong></td>
+                <td>Per-link pricing (as requested)</td>
+            </tr>
+            <tr>
+                <td><strong>Setup Fee</strong></td>
+                <td>$[XXX] one-time — audit, strategy, prospect list development</td>
+            </tr>
+            <tr>
+                <td><strong>Minimum Commitment</strong></td>
+                <td>3 months recommended for measurable results</td>
+            </tr>
+            <tr>
+                <td><strong>Approval Process</strong></td>
+                <td>Every prospect pre-approved by OJCommerce before outreach</td>
+            </tr>
+            <tr>
+                <td><strong>Payment Terms</strong></td>
+                <td>Invoice upon link going live and verified</td>
+            </tr>
+            <tr>
+                <td><strong>Reporting</strong></td>
+                <td>Twice-weekly updates (Tuesday + Friday) + monthly comprehensive report</td>
+            </tr>
+            <tr>
+                <td><strong>Start Date</strong></td>
+                <td>Immediate upon approval (as requested)</td>
+            </tr>
+            <tr>
+                <td><strong>Decision Maker</strong></td>
+                <td>Business Owner (final approval)</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="footer-note">Replace $[XXX] with your actual per-link pricing before the demo</div>
+    <div class="slide-number">13</div>
+</div>
+
+<!-- ==================== SLIDE 14: WHY US ==================== -->
+<div class="slide">
+    <div class="brand-bar"></div>
+    <h1 class="slide-heading">Why Choose Us — Addressing Your Pain Points</h1>
+    <p style="color: #666; font-size: 13px; margin-bottom: 15px;">We've listened to your frustrations with previous agencies. Here's how we're different:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width: 5%;">#</th>
+                <th style="width: 40%;">Alkesh's Pain Point</th>
+                <th style="width: 55%;">Our Solution</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">1</td>
+                <td style="color: #e53e3e;">"Previous agencies focused on volume over quality"</td>
+                <td style="color: #38a169;">We ONLY target DR 60+ sites. Every link pre-approved by you. Quality is non-negotiable.</td>
+            </tr>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">2</td>
+                <td style="color: #e53e3e;">"Low-quality backlinks delivered"</td>
+                <td style="color: #38a169;">Every prospect manually vetted for real US traffic, niche relevance, and authority. No shortcuts.</td>
+            </tr>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">3</td>
+                <td style="color: #e53e3e;">"No measurable referral traffic impact"</td>
+                <td style="color: #38a169;">We track referral traffic per link via GA4 reports. Every link must prove its value with data.</td>
+            </tr>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">4</td>
+                <td style="color: #e53e3e;">"Lack of transparency and control"</td>
+                <td style="color: #38a169;">Twice-weekly reports, monthly calls, full backlink log. You approve every prospect BEFORE outreach.</td>
+            </tr>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">5</td>
+                <td style="color: #e53e3e;">"Wasted budget on junk links"</td>
+                <td style="color: #38a169;">Per-link pricing = you only pay for approved, verified, DR 60+ quality placements. Zero waste.</td>
+            </tr>
+            <tr>
+                <td style="color: #0066FF; font-weight: 700;">6</td>
+                <td style="color: #e53e3e;">"No clear strategy or roadmap"</td>
+                <td style="color: #38a169;">90-day roadmap with weekly milestones. Clear path from 0.28% to 5-10% referral traffic.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="success-box" style="margin-top: 15px;">
+        <strong>Our Promise to OJCommerce:</strong> Every backlink we acquire will be from a real DR 60+ website with real US traffic, in the furniture/home niche, editorially placed, pre-approved by you, with measurable referral traffic tracked and reported. No volume games. No junk. Just quality that delivers results.
+    </div>
+    <div class="slide-number">14</div>
+</div>
+
+<!-- ==================== SLIDE 15: NEXT STEPS ==================== -->
+<div class="slide slide-cta">
+    <h1>Ready to Grow OJCommerce?</h1>
+    <div style="width: 80px; height: 3px; background: #00C9A7; margin: 15px auto;"></div>
+    <p>From 0.28% to 5-10% referral traffic. Let's make it happen.</p>
+    <br>
+    <div style="text-align: left; display: inline-block; margin-top: 10px;">
+        <div class="process-step" style="margin: 10px 0;">
+            <div class="step-number" style="background: #00C9A7; color: #0a1628;">1</div>
+            <div class="step-content">
+                <h3 style="color: #fff;">Business Owner approval</h3>
+                <p style="color: #a0aec0;">Final decision maker signs off on engagement</p>
+            </div>
+        </div>
+        <div class="process-step" style="margin: 10px 0;">
+            <div class="step-number" style="background: #00C9A7; color: #0a1628;">2</div>
+            <div class="step-content">
+                <h3 style="color: #fff;">Immediate kickoff — Week 1 audit & strategy</h3>
+                <p style="color: #a0aec0;">Site audit, competitor gap analysis, first prospect list</p>
+            </div>
+        </div>
+        <div class="process-step" style="margin: 10px 0;">
+            <div class="step-number" style="background: #00C9A7; color: #0a1628;">3</div>
+            <div class="step-content">
+                <h3 style="color: #fff;">Share GA4 & GSC reports + priority category pages</h3>
+                <p style="color: #a0aec0;">As agreed — reports to be shared once project starts</p>
+            </div>
+        </div>
+        <div class="process-step" style="margin: 10px 0;">
+            <div class="step-number" style="background: #00C9A7; color: #0a1628;">4</div>
+            <div class="step-content">
+                <h3 style="color: #fff;">First backlinks acquired within 3-4 weeks</h3>
+                <p style="color: #a0aec0;">Twice-weekly reporting begins from Week 2</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <p style="font-size: 20px; color: #fff; font-weight: 600;">Thank you, Alkesh.</p>
+        <p style="font-size: 16px; color: #00C9A7; margin-top: 5px;">Let's build something great for OJCommerce.</p>
+        <p style="color: #a0aec0; margin-top: 15px;">Shamique</p>
+    </div>
+    <div class="slide-number" style="color: #666;">15</div>
+</div>
+
+</body>
+</html>
