@@ -1,0 +1,512 @@
+{
+  "name": "Warmup ALL-IN-ONE - a.saima@bygweb.com",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 40
+            }
+          ]
+        }
+      },
+      "id": "trigger-sender",
+      "name": "SENDER - Every 40 Min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "const now = new Date();\nconst hour = now.getHours();\nconst isBusinessHours = hour >= 8 && hour <= 21;\n\nconst staticData = $getWorkflowStaticData('global');\nconst today = now.toISOString().split('T')[0];\nif (staticData.lastDate !== today) {\n  staticData.lastDate = today;\n  staticData.sentToday = 0;\n}\n\nconst maxPerDay = 30;\nconst canSend = isBusinessHours && staticData.sentToday < maxPerDay;\n\nreturn [{\n  json: {\n    canSend,\n    sentToday: staticData.sentToday,\n    maxPerDay,\n    currentHour: hour\n  }\n}];"
+      },
+      "id": "send-config",
+      "name": "Check Limits",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [420, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "can-send",
+              "leftValue": "={{ $json.canSend }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "can-send",
+      "name": "Can Send?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [640, 200]
+    },
+    {
+      "parameters": {
+        "jsCode": "// =============================================\n// PARTNER EMAILS - REPLACE WITH YOUR REAL ONES\n// =============================================\n\nconst partners = [\n  { name: 'Partner 1', email: 'partner1@gmail.com' },\n  { name: 'Partner 2', email: 'partner2@outlook.com' },\n  { name: 'Partner 3', email: 'partner3@gmail.com' },\n  { name: 'Partner 4', email: 'partner4@yahoo.com' },\n  { name: 'Partner 5', email: 'partner5@outlook.com' },\n  { name: 'Partner 6', email: 'partner6@gmail.com' }\n];\n\nconst staticData = $getWorkflowStaticData('global');\nconst idx = (staticData.partnerIdx || 0) % partners.length;\nstaticData.partnerIdx = idx + 1;\n\nreturn [{\n  json: {\n    to: partners[idx].email,\n    toName: partners[idx].name\n  }\n}];"
+      },
+      "id": "pick-partner",
+      "name": "Pick Partner",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 140]
+    },
+    {
+      "parameters": {
+        "jsCode": "const toName = $input.first().json.toName;\n\nconst conversations = [\n  {\n    subject: 'Quick question about the project',\n    body: `Hi ${toName},\\n\\nJust wanted to follow up on our conversation from last week. I have been thinking about the approach we discussed and I believe it could work really well for the next phase.\\n\\nLet me know when you have a moment to chat about it.\\n\\nBest regards,\\nSaima`\n  },\n  {\n    subject: 'Following up on our discussion',\n    body: `Hey ${toName},\\n\\nHope your week is going well! I wanted to check in about the timeline. Are we still on track for the dates we discussed earlier?\\n\\nLet me know if anything has changed on your end.\\n\\nThanks,\\nSaima`\n  },\n  {\n    subject: 'Meeting notes from today',\n    body: `Hi ${toName},\\n\\nI finished putting together the notes from our meeting. The main action items are looking solid. I will start working on the first deliverable this week.\\n\\nPlease let me know if I missed anything important.\\n\\nRegards,\\nSaima`\n  },\n  {\n    subject: 'Thoughts on the proposal?',\n    body: `Hi ${toName},\\n\\nJust circling back on the proposal we discussed. I have made the revisions you suggested and I think it is in much better shape now.\\n\\nWould appreciate your final thoughts before we move forward.\\n\\nThanks,\\nSaima`\n  },\n  {\n    subject: 'Schedule for next week',\n    body: `Hey ${toName},\\n\\nWanted to confirm our schedule for next week. I have a few openings on Tuesday and Thursday afternoon if either works for you.\\n\\nLet me know your availability and we can lock something in.\\n\\nBest,\\nSaima`\n  },\n  {\n    subject: 'Update on the deliverables',\n    body: `Hi ${toName},\\n\\nQuick update from my end. The first draft is coming along nicely and should be ready for review by end of this week. I am fairly happy with the direction.\\n\\nWill send it over as soon as it is polished.\\n\\nCheers,\\nSaima`\n  },\n  {\n    subject: 'Can we sync up tomorrow?',\n    body: `Hey ${toName},\\n\\nI have a few things I would like to run by you before the team meeting. Would you be available for a quick 15-minute call tomorrow morning?\\n\\nNo rush if you are busy - we can do it later in the week too.\\n\\nThanks,\\nSaima`\n  },\n  {\n    subject: 'Thanks for the introduction',\n    body: `Hi ${toName},\\n\\nReally appreciate you connecting me with your contact. We had a great initial conversation and I think there is a lot of potential for collaboration.\\n\\nI will keep you posted on how things develop.\\n\\nBest regards,\\nSaima`\n  },\n  {\n    subject: 'Checking in on progress',\n    body: `Hi ${toName},\\n\\nJust checking in to see how things are progressing on your end. I have completed my part and am ready to move to the next step whenever you are.\\n\\nNo pressure at all - just wanted to stay in the loop.\\n\\nThanks,\\nSaima`\n  },\n  {\n    subject: 'Feedback on the draft',\n    body: `Hey ${toName},\\n\\nI had a chance to review the draft you sent over. Overall it looks really strong. I have a couple of minor suggestions that I think could improve the flow.\\n\\nHappy to discuss whenever you have a few minutes.\\n\\nBest,\\nSaima`\n  },\n  {\n    subject: 'Idea for the upcoming campaign',\n    body: `Hi ${toName},\\n\\nI had an idea that might work well for what we are planning. It is a bit different from what we originally discussed but I think it could be more effective.\\n\\nWould love to get your take on it when you have time.\\n\\nRegards,\\nSaima`\n  },\n  {\n    subject: 'Great article I came across',\n    body: `Hey ${toName},\\n\\nI came across a really insightful piece about industry trends that reminded me of our recent conversation. Some of the data points were quite surprising.\\n\\nI can share the details when we next catch up.\\n\\nCheers,\\nSaima`\n  },\n  {\n    subject: 'Re: Project timeline update',\n    body: `Hi ${toName},\\n\\nThanks for the update on the timeline. That works perfectly from my end. I will adjust my schedule accordingly and make sure everything is aligned.\\n\\nLooking forward to getting this wrapped up.\\n\\nBest,\\nSaima`\n  },\n  {\n    subject: 'Resource you might find useful',\n    body: `Hey ${toName},\\n\\nI recently discovered a helpful tool that could streamline some of the work we have been doing manually. It has saved me quite a bit of time already.\\n\\nI will walk you through it next time we chat.\\n\\nThanks,\\nSaima`\n  },\n  {\n    subject: 'Quick favor to ask',\n    body: `Hi ${toName},\\n\\nHope you are doing well! I have a small favor to ask. Would you mind reviewing a short document I put together? It should only take about five minutes.\\n\\nCompletely understand if you are swamped right now.\\n\\nBest regards,\\nSaima`\n  },\n  {\n    subject: 'Looking forward to our call',\n    body: `Hey ${toName},\\n\\nJust wanted to confirm I have our call on the calendar. I have prepared a few discussion points that I think will be helpful.\\n\\nSee you then!\\n\\nBest,\\nSaima`\n  },\n  {\n    subject: 'Some thoughts on the strategy',\n    body: `Hi ${toName},\\n\\nI spent some time thinking through the strategy over the weekend. I have a few ideas that could strengthen our approach going forward.\\n\\nWould love to brainstorm together if you are up for it.\\n\\nRegards,\\nSaima`\n  },\n  {\n    subject: 'Brief update from my end',\n    body: `Hey ${toName},\\n\\nJust a quick update. I have finished the research phase and am now moving into the implementation stage. Everything is tracking well so far.\\n\\nWill share a more detailed update by Friday.\\n\\nCheers,\\nSaima`\n  },\n  {\n    subject: 'Wanted to share something',\n    body: `Hi ${toName},\\n\\nI came across something interesting that relates to what we were discussing last time. I think it could give us a fresh perspective on the problem.\\n\\nLet me know when you have a moment and I will fill you in.\\n\\nBest,\\nSaima`\n  },\n  {\n    subject: 'Are you available this week?',\n    body: `Hey ${toName},\\n\\nI have a couple of items I would like to go over with you. Nothing urgent but I think it would be good to align before the end of the week.\\n\\nWhat does your schedule look like?\\n\\nThanks,\\nSaima`\n  }\n];\n\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.usedSubjects) staticData.usedSubjects = [];\n\nlet available = conversations.filter(c => !staticData.usedSubjects.includes(c.subject));\nif (available.length === 0) {\n  staticData.usedSubjects = [];\n  available = conversations;\n}\n\nconst picked = available[Math.floor(Math.random() * available.length)];\nstaticData.usedSubjects.push(picked.subject);\nif (staticData.usedSubjects.length > 12) {\n  staticData.usedSubjects = staticData.usedSubjects.slice(-12);\n}\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    subject: picked.subject,\n    body: picked.body\n  }\n}];"
+      },
+      "id": "gen-email",
+      "name": "Generate Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 140]
+    },
+    {
+      "parameters": {
+        "fromEmail": "a.saima@bygweb.com",
+        "toEmail": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "text": "={{ $json.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "send-email",
+      "name": "Send from Saima",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1300, 140],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_HOSTINGER_SMTP_ID",
+          "name": "Hostinger SMTP - bygweb.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const staticData = $getWorkflowStaticData('global');\nstaticData.sentToday = (staticData.sentToday || 0) + 1;\n\nreturn [{\n  json: {\n    status: 'SENT',\n    from: 'a.saima@bygweb.com',\n    to: $input.first().json.to,\n    subject: $input.first().json.subject,\n    sentToday: staticData.sentToday,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "log-sent",
+      "name": "Log Sent",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1520, 140]
+    },
+    {
+      "parameters": {},
+      "id": "skip-limit",
+      "name": "Skip (Limit Reached)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [860, 300]
+    },
+
+
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 5
+            }
+          ]
+        }
+      },
+      "id": "trigger-reply",
+      "name": "REPLY BOT - Every 5 Min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 560]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute",
+              "minute": 1
+            }
+          ]
+        },
+        "mailbox": "INBOX",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "read-partner-inbox",
+      "name": "Read Partner Inbox",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [420, 560],
+      "credentials": {
+        "imap": {
+          "id": "REPLACE_WITH_PARTNER_IMAP_ID",
+          "name": "Partner IMAP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "from-bygweb",
+              "leftValue": "={{ $json.from }}",
+              "rightValue": "bygweb.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-bygweb-inbox",
+      "name": "From bygweb.com?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [640, 560]
+    },
+    {
+      "parameters": {
+        "amount": "={{ Math.floor(Math.random() * 30) + 5 }}",
+        "unit": "minutes"
+      },
+      "id": "reply-delay",
+      "name": "Wait 5-35 Min",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [860, 500]
+    },
+    {
+      "parameters": {
+        "jsCode": "const shortReplies = [\n  'Thanks for the update Saima! This looks great. Let me review and get back to you by end of day.',\n  'Appreciate you sharing this! I had a few thoughts - can we schedule a quick call to discuss?',\n  'Great timing - I was just thinking about this. Let me pull together some notes and circle back.',\n  'Thanks Saima! I agree with your approach. Let us move forward with this plan.',\n  'This is really helpful, thank you. I will take a closer look and share my feedback tomorrow.',\n  'Sounds good to me! I am available Thursday or Friday if you want to sync up.',\n  'Perfect, thanks for the follow-up. Everything looks on track from my end as well.',\n  'Good stuff! I have a few ideas to add. Will send them over shortly.',\n  'Thanks for checking in Saima! Things are going well. Let us catch up next week.',\n  'Really appreciate this! The direction looks solid. Happy to discuss further whenever you are free.'\n];\n\nconst mediumReplies = [\n  'Thanks for sending this over Saima! I have had a chance to review the details and overall it looks really solid. I especially like the approach you outlined in the first section.\\n\\nOne thing I was wondering - have we considered the timeline impact? Might be worth a quick discussion. Let me know when works for you.',\n  'Great update Saima! I am glad things are progressing well. I have been working on the related piece on my end and I think our timelines are aligning nicely.\\n\\nI will have my portion ready by Thursday. Should we plan to combine everything on Friday?',\n  'Really appreciate the thorough summary. I had a couple of follow-up thoughts.\\n\\nFirst, I think the strategy is spot on. Second, we might want to loop in the broader team once we have the draft finalized.\\n\\nLet me know what you think about the timing.',\n  'This is exactly what I was hoping to see. Nice work pulling this together so quickly Saima.\\n\\nI do have one suggestion. Maybe we should add a brief section covering the competitive landscape. I can draft that part if you would like.\\n\\nOtherwise I think we are in great shape.',\n  'Thanks for the heads up Saima. I just reviewed the changes and they look good to me.\\n\\nThe feedback you incorporated really strengthened the overall piece. I think we are ready to move to the next phase whenever you are.\\n\\nShall we aim for Monday?'\n];\n\nconst useShort = Math.random() < 0.6;\nconst pool = useShort ? shortReplies : mediumReplies;\nconst reply = pool[Math.floor(Math.random() * pool.length)];\n\nconst origSubject = $input.first().json.subject || 'your message';\nconst replySubject = origSubject.startsWith('Re:') ? origSubject : 'Re: ' + origSubject;\n\nconst fromField = $input.first().json.from || '';\nconst match = fromField.match(/<(.+?)>/);\nconst senderEmail = match ? match[1] : fromField.trim();\n\nreturn [{\n  json: {\n    replyTo: senderEmail,\n    subject: replySubject,\n    body: reply\n  }\n}];"
+      },
+      "id": "gen-reply",
+      "name": "Generate Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 500]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ /* CHANGE TO PARTNER EMAIL */ 'partner@gmail.com' }}",
+        "toEmail": "={{ $json.replyTo }}",
+        "subject": "={{ $json.subject }}",
+        "text": "={{ $json.body }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "send-reply",
+      "name": "Reply to Saima",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1300, 500],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_PARTNER_SMTP_ID",
+          "name": "Partner SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    status: 'REPLY_SENT',\n    repliedTo: $input.first().json.replyTo,\n    subject: $input.first().json.subject,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "log-reply",
+      "name": "Log Reply",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1520, 500]
+    },
+    {
+      "parameters": {},
+      "id": "not-bygweb-inbox",
+      "name": "Not bygweb - Skip",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [860, 660]
+    },
+
+
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 20
+            }
+          ]
+        }
+      },
+      "id": "trigger-spam",
+      "name": "SPAM RESCUE - Every 20 Min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 920]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute",
+              "minute": 1
+            }
+          ]
+        },
+        "mailbox": "[Gmail]/Spam",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "read-spam",
+      "name": "Read Partner Spam Folder",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [420, 920],
+      "credentials": {
+        "imap": {
+          "id": "REPLACE_WITH_PARTNER_IMAP_ID",
+          "name": "Partner IMAP"
+        }
+      },
+      "notes": "CHANGE MAILBOX based on provider:\nGmail: [Gmail]/Spam\nOutlook: Junk\nYahoo: Bulk Mail"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "from-bygweb-spam",
+              "leftValue": "={{ $json.from }}",
+              "rightValue": "bygweb.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-bygweb-spam",
+      "name": "From bygweb.com? (Spam)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [640, 920]
+    },
+    {
+      "parameters": {
+        "jsCode": "// =============================================\n// SPAM RESCUE\n// =============================================\n// This node detects bygweb.com emails in spam.\n//\n// TO ACTUALLY MOVE THE EMAIL:\n// Add a Gmail/Outlook API node after this:\n//\n// Gmail: Use Gmail node → Modify Labels\n//   - Remove: SPAM\n//   - Add: INBOX, IMPORTANT\n//\n// Outlook: Use Microsoft Graph → Move Message\n//   - Destination: inbox\n//\n// The detection + logging alone helps track\n// spam rate. The API node does the actual rescue.\n\nconst email = $input.first().json;\n\nconst staticData = $getWorkflowStaticData('global');\nif (!staticData.rescueCount) staticData.rescueCount = 0;\nstaticData.rescueCount++;\n\nreturn [{\n  json: {\n    action: 'RESCUED_FROM_SPAM',\n    from: email.from,\n    subject: email.subject || '(no subject)',\n    messageId: email.messageId || '',\n    totalRescues: staticData.rescueCount,\n    rescuedAt: new Date().toISOString(),\n    warning: staticData.rescueCount > 10 \n      ? 'HIGH SPAM RATE! Check SPF/DKIM/DMARC records for bygweb.com'\n      : 'Normal'\n  }\n}];"
+      },
+      "id": "rescue-spam",
+      "name": "Rescue from Spam",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [860, 860]
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    status: 'SPAM_RESCUED',\n    from: $input.first().json.from,\n    subject: $input.first().json.subject,\n    totalRescues: $input.first().json.totalRescues,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "log-rescue",
+      "name": "Log Rescue",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1080, 860]
+    },
+    {
+      "parameters": {},
+      "id": "not-bygweb-spam",
+      "name": "Not bygweb - Ignore",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [860, 1020]
+    },
+
+
+    {
+      "parameters": {
+        "content": "## SENDER FLOW\nSends warmup emails FROM a.saima@bygweb.com TO partner accounts.\n\nTriggers every 40 minutes during business hours (8AM-9PM).\nMax 30 emails/day.",
+        "width": 460,
+        "height": 220,
+        "color": 4
+      },
+      "id": "note-sender",
+      "name": "Sticky Note - Sender",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [160, 60]
+    },
+    {
+      "parameters": {
+        "content": "## AUTO-REPLY FLOW\nChecks partner inbox for emails from bygweb.com.\nWaits 5-35 min (human-like), then replies.\n\nReplies BOOST sender reputation the most!\n\n**SETUP:** Connect partner IMAP + SMTP credentials.",
+        "width": 460,
+        "height": 220,
+        "color": 2
+      },
+      "id": "note-reply",
+      "name": "Sticky Note - Reply",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [160, 420]
+    },
+    {
+      "parameters": {
+        "content": "## SPAM RESCUE FLOW\nChecks partner SPAM/JUNK folder for bygweb.com emails.\nMoves them to inbox = STRONGEST positive signal!\n\n**SETUP:**\n1. Connect partner IMAP credential\n2. Change mailbox: Gmail=[Gmail]/Spam, Outlook=Junk\n3. Add Gmail/Outlook API node after 'Rescue from Spam' to actually move the email",
+        "width": 460,
+        "height": 260,
+        "color": 6
+      },
+      "id": "note-spam",
+      "name": "Sticky Note - Spam",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [160, 780]
+    },
+    {
+      "parameters": {
+        "content": "## SETUP CHECKLIST\n\n1. Create Hostinger SMTP credential for a.saima@bygweb.com\n2. Create IMAP credential for each partner email\n3. Create SMTP credential for each partner email\n4. Replace partner emails in 'Pick Partner' node\n5. Replace 'partner@gmail.com' in 'Reply to Saima' node\n6. Set spam folder name in 'Read Partner Spam Folder'\n7. If multiple partners: duplicate Reply + Spam flows\n8. Verify SPF/DKIM/DMARC for bygweb.com\n9. Activate workflow!",
+        "width": 360,
+        "height": 380,
+        "color": 5
+      },
+      "id": "note-setup",
+      "name": "Sticky Note - Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [1700, 60]
+    }
+  ],
+  "connections": {
+    "SENDER - Every 40 Min": {
+      "main": [
+        [{ "node": "Check Limits", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Limits": {
+      "main": [
+        [{ "node": "Can Send?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Can Send?": {
+      "main": [
+        [{ "node": "Pick Partner", "type": "main", "index": 0 }],
+        [{ "node": "Skip (Limit Reached)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Pick Partner": {
+      "main": [
+        [{ "node": "Generate Email", "type": "main", "index": 0 }]
+      ]
+    },
+    "Generate Email": {
+      "main": [
+        [{ "node": "Send from Saima", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send from Saima": {
+      "main": [
+        [{ "node": "Log Sent", "type": "main", "index": 0 }]
+      ]
+    },
+
+    "REPLY BOT - Every 5 Min": {
+      "main": [
+        [{ "node": "Read Partner Inbox", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read Partner Inbox": {
+      "main": [
+        [{ "node": "From bygweb.com?", "type": "main", "index": 0 }]
+      ]
+    },
+    "From bygweb.com?": {
+      "main": [
+        [{ "node": "Wait 5-35 Min", "type": "main", "index": 0 }],
+        [{ "node": "Not bygweb - Skip", "type": "main", "index": 0 }]
+      ]
+    },
+    "Wait 5-35 Min": {
+      "main": [
+        [{ "node": "Generate Reply", "type": "main", "index": 0 }]
+      ]
+    },
+    "Generate Reply": {
+      "main": [
+        [{ "node": "Reply to Saima", "type": "main", "index": 0 }]
+      ]
+    },
+    "Reply to Saima": {
+      "main": [
+        [{ "node": "Log Reply", "type": "main", "index": 0 }]
+      ]
+    },
+
+    "SPAM RESCUE - Every 20 Min": {
+      "main": [
+        [{ "node": "Read Partner Spam Folder", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read Partner Spam Folder": {
+      "main": [
+        [{ "node": "From bygweb.com? (Spam)", "type": "main", "index": 0 }]
+      ]
+    },
+    "From bygweb.com? (Spam)": {
+      "main": [
+        [{ "node": "Rescue from Spam", "type": "main", "index": 0 }],
+        [{ "node": "Not bygweb - Ignore", "type": "main", "index": 0 }]
+      ]
+    },
+    "Rescue from Spam": {
+      "main": [
+        [{ "node": "Log Rescue", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    { "name": "warmup-bygweb" }
+  ],
+  "pinData": {}
+}

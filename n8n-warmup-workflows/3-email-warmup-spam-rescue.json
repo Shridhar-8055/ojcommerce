@@ -1,0 +1,232 @@
+{
+  "name": "Email Warmup - Spam Rescue",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "id": "spam-check-trigger",
+      "name": "Every 30 Minutes",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 340]
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute",
+              "minute": 1
+            }
+          ]
+        },
+        "mailbox": "[Gmail]/Spam",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "read-spam-gmail",
+      "name": "Read Gmail Spam Folder",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [480, 240],
+      "credentials": {
+        "imap": {
+          "id": "REPLACE_WITH_GMAIL_IMAP_CREDENTIAL_ID",
+          "name": "Partner Gmail IMAP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute",
+              "minute": 1
+            }
+          ]
+        },
+        "mailbox": "Junk",
+        "options": {
+          "allowUnauthorizedCerts": false
+        }
+      },
+      "id": "read-spam-outlook",
+      "name": "Read Outlook Junk Folder",
+      "type": "n8n-nodes-base.emailReadImap",
+      "typeVersion": 2,
+      "position": [480, 460],
+      "credentials": {
+        "imap": {
+          "id": "REPLACE_WITH_OUTLOOK_IMAP_CREDENTIAL_ID",
+          "name": "Partner Outlook IMAP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "warmup-domain-check-gmail",
+              "leftValue": "={{ $json.from }}",
+              "rightValue": "yourdomain.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-warmup-gmail",
+      "name": "Is Warmup? (Gmail)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [720, 240]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "warmup-domain-check-outlook",
+              "leftValue": "={{ $json.from }}",
+              "rightValue": "yourdomain.com",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "is-warmup-outlook",
+      "name": "Is Warmup? (Outlook)",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [720, 460]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// SPAM RESCUE - Gmail\n// ============================================\n// Moving an email from Spam to Inbox is the STRONGEST\n// positive signal you can send to Gmail.\n//\n// In n8n, IMAP doesn't natively support MOVE.\n// Options to actually move the email:\n//\n// Option 1: Use Gmail API node (recommended)\n//   - Remove SPAM label, add INBOX label\n//   - Gmail API > Modify Message > removeLabelIds: ['SPAM'], addLabelIds: ['INBOX']\n//\n// Option 2: Use HTTP Request node to Gmail API\n//   - POST https://gmail.googleapis.com/gmail/v1/users/me/messages/{id}/modify\n//   - Body: { removeLabelIds: ['SPAM'], addLabelIds: ['INBOX'] }\n//\n// For now, this node logs the rescue action.\n// Connect a Gmail API node after this for actual MOVE.\n\nconst emailData = $input.first().json;\n\nreturn [{\n  json: {\n    action: 'rescue_from_spam',\n    provider: 'gmail',\n    from: emailData.from,\n    subject: emailData.subject || '(no subject)',\n    messageId: emailData.messageId || '',\n    spamFolder: '[Gmail]/Spam',\n    rescuedAt: new Date().toISOString(),\n    instruction: 'Connect Gmail API node to move: removeLabelIds SPAM, addLabelIds INBOX'\n  }\n}];"
+      },
+      "id": "rescue-gmail",
+      "name": "Rescue from Gmail Spam",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 180]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// SPAM RESCUE - Outlook\n// ============================================\n// Moving from Junk to Inbox trains Outlook that\n// this sender is legitimate.\n//\n// For Outlook/Microsoft 365:\n// Use Microsoft Graph API to move message:\n//   POST /me/messages/{id}/move\n//   Body: { destinationId: 'inbox' }\n//\n// For now, this node logs the rescue action.\n// Connect a Microsoft Graph API node after this.\n\nconst emailData = $input.first().json;\n\nreturn [{\n  json: {\n    action: 'rescue_from_spam',\n    provider: 'outlook',\n    from: emailData.from,\n    subject: emailData.subject || '(no subject)',\n    messageId: emailData.messageId || '',\n    spamFolder: 'Junk',\n    rescuedAt: new Date().toISOString(),\n    instruction: 'Connect Microsoft Graph API node to move message to Inbox'\n  }\n}];"
+      },
+      "id": "rescue-outlook",
+      "name": "Rescue from Outlook Junk",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [960, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Consolidated rescue log\n// Track all spam rescues for monitoring warmup health\n\nconst data = $input.first().json;\n\n// If too many emails landing in spam, it indicates:\n// 1. DNS records (SPF/DKIM/DMARC) may be misconfigured\n// 2. Sending volume ramped too fast\n// 3. Email content may be triggering filters\n\nreturn [{\n  json: {\n    ...data,\n    status: 'rescued_successfully',\n    healthNote: 'If spam rate > 5%, slow down sending volume and check DNS records'\n  }\n}];"
+      },
+      "id": "rescue-log",
+      "name": "Log Rescue Action",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1200, 300]
+    },
+    {
+      "parameters": {},
+      "id": "ignore-gmail",
+      "name": "Not Warmup (Gmail)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [960, 300]
+    },
+    {
+      "parameters": {},
+      "id": "ignore-outlook",
+      "name": "Not Warmup (Outlook)",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [960, 540]
+    }
+  ],
+  "connections": {
+    "Every 30 Minutes": {
+      "main": [
+        [
+          { "node": "Read Gmail Spam Folder", "type": "main", "index": 0 },
+          { "node": "Read Outlook Junk Folder", "type": "main", "index": 0 }
+        ]
+      ]
+    },
+    "Read Gmail Spam Folder": {
+      "main": [
+        [{ "node": "Is Warmup? (Gmail)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Read Outlook Junk Folder": {
+      "main": [
+        [{ "node": "Is Warmup? (Outlook)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Is Warmup? (Gmail)": {
+      "main": [
+        [{ "node": "Rescue from Gmail Spam", "type": "main", "index": 0 }],
+        [{ "node": "Not Warmup (Gmail)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Is Warmup? (Outlook)": {
+      "main": [
+        [{ "node": "Rescue from Outlook Junk", "type": "main", "index": 0 }],
+        [{ "node": "Not Warmup (Outlook)", "type": "main", "index": 0 }]
+      ]
+    },
+    "Rescue from Gmail Spam": {
+      "main": [
+        [{ "node": "Log Rescue Action", "type": "main", "index": 0 }]
+      ]
+    },
+    "Rescue from Outlook Junk": {
+      "main": [
+        [{ "node": "Log Rescue Action", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    { "name": "email-warmup" }
+  ],
+  "pinData": {}
+}

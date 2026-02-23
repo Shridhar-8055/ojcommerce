@@ -1,0 +1,230 @@
+{
+  "name": "Email Warmup - Sender",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 45
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// WARMUP CONFIGURATION - EDIT THESE VALUES\n// ============================================\nconst START_DATE = '2026-02-21'; // Set your warmup start date\n\nconst now = new Date();\nconst startDate = new Date(START_DATE);\nconst daysSinceStart = Math.floor((now - startDate) / (1000 * 60 * 60 * 24));\nconst week = Math.floor(daysSinceStart / 7) + 1;\n\n// Gradual ramp-up schedule\nconst schedule = {\n  1: { perDay: 3, replyRate: 100, weekendsOff: true },\n  2: { perDay: 6, replyRate: 80, weekendsOff: true },\n  3: { perDay: 12, replyRate: 70, weekendsOff: false },\n  4: { perDay: 20, replyRate: 60, weekendsOff: false },\n  5: { perDay: 30, replyRate: 50, weekendsOff: false },\n  6: { perDay: 40, replyRate: 40, weekendsOff: false }\n};\n\nconst config = schedule[Math.min(week, 6)];\n\n// Business hours check (8 AM - 6 PM)\nconst hour = now.getHours();\nconst isBusinessHours = hour >= 8 && hour <= 18;\n\n// Weekend check\nconst dayOfWeek = now.getDay();\nconst isWeekend = dayOfWeek === 0 || dayOfWeek === 6;\nconst skipWeekend = config.weekendsOff && isWeekend;\n\nreturn [{\n  json: {\n    week,\n    daysSinceStart,\n    emailsPerDay: config.perDay,\n    replyRate: config.replyRate,\n    shouldSend: isBusinessHours && !skipWeekend,\n    currentHour: hour,\n    isWeekend\n  }\n}];"
+      },
+      "id": "warmup-config",
+      "name": "Get Warmup Config",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "business-hours-check",
+              "leftValue": "={{ $json.shouldSend }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "should-send",
+      "name": "Business Hours?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 340]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Track daily send count using workflow static data\nconst staticData = $getWorkflowStaticData('global');\nconst today = new Date().toISOString().split('T')[0];\n\n// Reset counter each day\nif (staticData.lastDate !== today) {\n  staticData.lastDate = today;\n  staticData.sentToday = 0;\n}\n\nconst emailsPerDay = $input.first().json.emailsPerDay;\nconst canSend = staticData.sentToday < emailsPerDay;\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    sentToday: staticData.sentToday,\n    canSend,\n    remaining: emailsPerDay - staticData.sentToday\n  }\n}];"
+      },
+      "id": "daily-counter",
+      "name": "Check Daily Limit",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 280]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "limit-check",
+              "leftValue": "={{ $json.canSend }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "under-limit",
+      "name": "Under Daily Limit?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1120, 280]
+    },
+    {
+      "parameters": {
+        "jsCode": "// ============================================\n// WARMUP PARTNERS - EDIT THIS LIST\n// ============================================\n// Add 5-10 email accounts YOU control\n// Mix providers: Gmail, Outlook, Yahoo, custom domains\n\nconst warmupPartners = [\n  { name: 'Alex', email: 'warmup1@yourdomain.com', provider: 'custom' },\n  { name: 'Sarah', email: 'warmup2@gmail.com', provider: 'gmail' },\n  { name: 'Mike', email: 'warmup3@outlook.com', provider: 'outlook' },\n  { name: 'Lisa', email: 'warmup4@yourdomain.com', provider: 'custom' },\n  { name: 'James', email: 'warmup5@yahoo.com', provider: 'yahoo' },\n  { name: 'Emma', email: 'warmup6@gmail.com', provider: 'gmail' },\n  { name: 'David', email: 'warmup7@outlook.com', provider: 'outlook' },\n  { name: 'Nina', email: 'warmup8@yourdomain.com', provider: 'custom' }\n];\n\n// Rotate through partners evenly\nconst staticData = $getWorkflowStaticData('global');\nconst idx = (staticData.partnerIndex || 0) % warmupPartners.length;\nstaticData.partnerIndex = idx + 1;\n\nconst partner = warmupPartners[idx];\n\nreturn [{\n  json: {\n    partnerName: partner.name,\n    partnerEmail: partner.email,\n    partnerProvider: partner.provider,\n    week: $input.first().json.week,\n    replyRate: $input.first().json.replyRate\n  }\n}];"
+      },
+      "id": "pick-partner",
+      "name": "Pick Warmup Partner",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1340, 220]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Generate realistic, human-like email content\n// These look like genuine business conversations\n\nconst week = $input.first().json.week;\nconst partnerName = $input.first().json.partnerName;\n\n// Subject lines - casual business tone\nconst subjects = [\n  'Quick question about the project',\n  'Following up on our discussion',\n  'Meeting notes from today',\n  'Resource you might find useful',\n  'Thoughts on the proposal?',\n  'Schedule for next week',\n  'Interesting article I found',\n  'Can we sync up tomorrow?',\n  'Update on the deliverables',\n  'Thanks for the introduction',\n  'Re: Project timeline update',\n  'Checking in on progress',\n  'Quick favor to ask',\n  'Feedback on the draft',\n  'Idea for the upcoming campaign',\n  'Just wanted to share this',\n  'Are you available this week?',\n  'Some thoughts on the strategy',\n  'Looking forward to our call',\n  'Brief update from my end'\n];\n\n// Plain text bodies - NO links in week 1-2 (critical for warmup)\nconst bodiesWeek1 = [\n  `Hi ${partnerName},\\n\\nJust wanted to follow up on our conversation from last week. I have been thinking about the approach we discussed and I think it could work really well.\\n\\nLet me know when you have a moment to chat about it.\\n\\nBest regards`,\n  `Hey ${partnerName},\\n\\nHope your week is going well. I wanted to check in about the timeline for the next phase. Are we still on track for the dates we discussed?\\n\\nLet me know if anything has changed on your end.\\n\\nThanks`,\n  `Hi ${partnerName},\\n\\nThanks for sending over those details yesterday. I have reviewed everything and it looks great. Just had a couple of small questions I wanted to run by you.\\n\\nAre you free for a quick call this week?\\n\\nBest`,\n  `Hi ${partnerName},\\n\\nI finished putting together the notes from our meeting. The main action items are looking solid. I will start working on the first deliverable this week.\\n\\nLet me know if I missed anything important.\\n\\nRegards`,\n  `Hey ${partnerName},\\n\\nJust a heads up - I made some updates to the shared document based on the feedback we received. Take a look when you get a chance and let me know what you think.\\n\\nTalk soon`,\n  `Hi ${partnerName},\\n\\nWanted to share a quick update on the progress so far. Things are moving along nicely and we should have the first draft ready by end of week.\\n\\nHappy to walk you through it whenever you are available.\\n\\nBest regards`,\n  `Hey ${partnerName},\\n\\nI came across some interesting data points that are relevant to our project. I think they could help strengthen our approach significantly.\\n\\nWould love to discuss when you have a few minutes.\\n\\nCheers`,\n  `Hi ${partnerName},\\n\\nThanks for the great discussion earlier. I have been mulling over the points you raised and I think you are right about pivoting the strategy.\\n\\nLet us schedule some time to map out the next steps.\\n\\nBest`,\n  `Hey ${partnerName},\\n\\nJust circling back on the proposal we discussed. I have made the revisions you suggested and I think it is in much better shape now.\\n\\nWould appreciate your final thoughts before we move forward.\\n\\nThanks`,\n  `Hi ${partnerName},\\n\\nQuick update from my end - the team is aligned on the direction we discussed. Everyone is excited about the potential impact.\\n\\nLet me know if you need anything else from me.\\n\\nRegards`\n];\n\nconst subject = subjects[Math.floor(Math.random() * subjects.length)];\nconst body = bodiesWeek1[Math.floor(Math.random() * bodiesWeek1.length)];\n\n// Human-like random delay before sending (2-12 minutes)\nconst humanDelay = Math.floor(Math.random() * 10) + 2;\n\nreturn [{\n  json: {\n    ...$input.first().json,\n    subject,\n    body,\n    humanDelay,\n    generatedAt: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "generate-email",
+      "name": "Generate Human Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1560, 220]
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.humanDelay }}",
+        "unit": "minutes"
+      },
+      "id": "human-delay",
+      "name": "Human-Like Delay",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [1780, 220]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ /* YOUR WARMUP EMAIL */ 'hello@yourdomain.com' }}",
+        "toEmail": "={{ $json.partnerEmail }}",
+        "subject": "={{ $json.subject }}",
+        "text": "={{ $json.body }}",
+        "options": {}
+      },
+      "id": "send-email",
+      "name": "Send Warmup Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [2000, 220]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Increment daily counter\nconst staticData = $getWorkflowStaticData('global');\nstaticData.sentToday = (staticData.sentToday || 0) + 1;\n\nreturn [{\n  json: {\n    status: 'sent_successfully',\n    to: $input.first().json.partnerEmail,\n    toName: $input.first().json.partnerName,\n    subject: $input.first().json.subject,\n    week: $input.first().json.week,\n    sentToday: staticData.sentToday,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "update-counter",
+      "name": "Update Send Counter",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [2220, 220]
+    },
+    {
+      "parameters": {},
+      "id": "no-op-hours",
+      "name": "Outside Hours - Skip",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [900, 460]
+    },
+    {
+      "parameters": {},
+      "id": "no-op-limit",
+      "name": "Daily Limit Reached",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [1340, 400]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [{ "node": "Get Warmup Config", "type": "main", "index": 0 }]
+      ]
+    },
+    "Get Warmup Config": {
+      "main": [
+        [{ "node": "Business Hours?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Business Hours?": {
+      "main": [
+        [{ "node": "Check Daily Limit", "type": "main", "index": 0 }],
+        [{ "node": "Outside Hours - Skip", "type": "main", "index": 0 }]
+      ]
+    },
+    "Check Daily Limit": {
+      "main": [
+        [{ "node": "Under Daily Limit?", "type": "main", "index": 0 }]
+      ]
+    },
+    "Under Daily Limit?": {
+      "main": [
+        [{ "node": "Pick Warmup Partner", "type": "main", "index": 0 }],
+        [{ "node": "Daily Limit Reached", "type": "main", "index": 0 }]
+      ]
+    },
+    "Pick Warmup Partner": {
+      "main": [
+        [{ "node": "Generate Human Email", "type": "main", "index": 0 }]
+      ]
+    },
+    "Generate Human Email": {
+      "main": [
+        [{ "node": "Human-Like Delay", "type": "main", "index": 0 }]
+      ]
+    },
+    "Human-Like Delay": {
+      "main": [
+        [{ "node": "Send Warmup Email", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Warmup Email": {
+      "main": [
+        [{ "node": "Update Send Counter", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "tags": [
+    { "name": "email-warmup" }
+  ],
+  "pinData": {}
+}
