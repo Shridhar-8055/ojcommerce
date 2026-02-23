@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OJCommerce — Backlink Prospect List</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0a1628; color: #333; min-height: 100vh; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a365d 50%, #0066FF 100%);
+    padding: 50px 40px 40px;
+    text-align: center;
+    color: #fff;
+  }
+  .header h1 { font-size: 36px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+  .header .subtitle { font-size: 16px; color: #a0c4ff; font-weight: 400; margin-bottom: 24px; }
+  .header .stats-row { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+  .stat-box {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 16px 28px;
+    text-align: center;
+    min-width: 160px;
+  }
+  .stat-box .number { font-size: 32px; font-weight: 800; color: #00C9A7; }
+  .stat-box .label { font-size: 12px; color: #a0c4ff; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+  /* Navigation */
+  .nav-bar {
+    background: #0f1d32;
+    padding: 0 40px;
+    display: flex;
+    gap: 4px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid #1a365d;
+  }
+  .nav-btn {
+    padding: 14px 28px;
+    border: none;
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-bottom: 3px solid transparent;
+    position: relative;
+  }
+  .nav-btn:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }
+  .nav-btn.active { color: #fff; border-bottom-color: #0066FF; background: rgba(0,102,255,0.1); }
+  .nav-btn .badge {
+    background: #0066FF;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    font-weight: 700;
+  }
+  .nav-btn.active .badge { background: #00C9A7; }
+
+  /* Content */
+  .content { background: #f7f9fc; min-height: 60vh; }
+  .tab-panel { display: none; padding: 30px 40px 60px; max-width: 1400px; margin: 0 auto; }
+  .tab-panel.active { display: block; }
+
+  /* Section Headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .section-header h2 { font-size: 24px; color: #0a1628; font-weight: 700; }
+  .section-header .dr-badge {
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .dr-badge.tier1 { background: linear-gradient(135deg, #D4AF37, #F5D060); color: #5a4000; }
+  .dr-badge.tier2 { background: linear-gradient(135deg, #0066FF, #4d94ff); }
+
+  .section-desc {
+    background: #fff;
+    border-left: 4px solid #0066FF;
+    padding: 16px 20px;
+    border-radius: 0 10px 10px 0;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+  .section-desc strong { color: #0a1628; }
+
+  /* Search & Filter */
+  .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-box {
+    flex: 1;
+    min-width: 250px;
+    padding: 10px 16px 10px 40px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E") 14px center no-repeat;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+  .search-box:focus { border-color: #0066FF; }
+  .filter-btn {
+    padding: 10px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #555;
+  }
+  .filter-btn:hover { border-color: #0066FF; color: #0066FF; }
+  .filter-btn.active { background: #0066FF; color: #fff; border-color: #0066FF; }
+
+  /* Table */
+  .table-wrapper {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    background: #0a1628;
+    color: #fff;
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    position: sticky;
+    top: 52px;
+    z-index: 50;
+  }
+  thead th:first-child { width: 40px; text-align: center; }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.2s; }
+  tbody tr:hover { background: #f0f7ff; }
+  tbody td { padding: 14px 16px; vertical-align: middle; }
+  tbody td:first-child { text-align: center; color: #999; font-weight: 600; font-size: 13px; }
+
+  .site-name { font-weight: 700; color: #0a1628; display: block; margin-bottom: 2px; }
+  .site-url { font-size: 12px; color: #0066FF; text-decoration: none; }
+  .site-url:hover { text-decoration: underline; }
+
+  .dr-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    min-width: 50px;
+  }
+  .dr-pill.gold { background: #FFF8E1; color: #B8860B; }
+  .dr-pill.blue { background: #E8F4FD; color: #0066FF; }
+
+  .niche-tag {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    margin: 1px 2px;
+  }
+  .niche-tag.decor { background: #F3E8FF; color: #7C3AED; }
+  .niche-tag.furniture { background: #DBEAFE; color: #1D4ED8; }
+  .niche-tag.diy { background: #FEF3C7; color: #92400E; }
+  .niche-tag.arch { background: #D1FAE5; color: #065F46; }
+  .niche-tag.lifestyle { background: #FFE4E6; color: #BE123C; }
+  .niche-tag.realestate { background: #F1F5F9; color: #475569; }
+  .niche-tag.design { background: #ECFDF5; color: #047857; }
+  .niche-tag.luxury { background: #FDF4FF; color: #A21CAF; }
+
+  .opp-type {
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: inline-block;
+    margin: 1px 2px;
+  }
+  .opp-type.pitch { background: #EDE9FE; color: #6D28D9; }
+  .opp-type.guest { background: #D1FAE5; color: #065F46; }
+  .opp-type.pr { background: #DBEAFE; color: #1D4ED8; }
+  .opp-type.submit { background: #FEF3C7; color: #92400E; }
+  .opp-type.profile { background: #FFE4E6; color: #BE123C; }
+  .opp-type.contrib { background: #F0FDF4; color: #15803D; }
+
+  .contact-cell { font-size: 12px; color: #555; line-height: 1.5; }
+  .contact-cell a { color: #0066FF; text-decoration: none; }
+  .contact-cell a:hover { text-decoration: underline; }
+
+  .status-select {
+    padding: 5px 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    outline: none;
+    width: 110px;
+  }
+  .status-select.not-started { border-color: #e2e8f0; color: #999; }
+  .status-select.pitched { border-color: #0066FF; color: #0066FF; background: #EBF5FF; }
+  .status-select.replied { border-color: #F59E0B; color: #D97706; background: #FFFBEB; }
+  .status-select.accepted { border-color: #10B981; color: #059669; background: #ECFDF5; }
+  .status-select.rejected { border-color: #EF4444; color: #DC2626; background: #FEF2F2; }
+  .status-select.published { border-color: #8B5CF6; color: #7C3AED; background: #F5F3FF; }
+
+  /* HARO Section */
+  .haro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .haro-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-top: 4px solid #0066FF;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .haro-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+  .haro-card h3 { font-size: 18px; color: #0a1628; margin-bottom: 6px; }
+  .haro-card .haro-url { font-size: 13px; color: #0066FF; text-decoration: none; display: block; margin-bottom: 12px; }
+  .haro-card .haro-url:hover { text-decoration: underline; }
+  .haro-card p { font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px; }
+  .haro-card .cost-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .cost-badge.free { background: #D1FAE5; color: #065F46; }
+  .cost-badge.paid { background: #FEF3C7; color: #92400E; }
+  .cost-badge.freemium { background: #EDE9FE; color: #6D28D9; }
+
+  /* Priority Guide */
+  .priority-section {
+    background: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    margin-top: 30px;
+  }
+  .priority-section h3 { font-size: 20px; color: #0a1628; margin-bottom: 20px; }
+  .priority-steps { display: flex; flex-direction: column; gap: 16px; }
+  .priority-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #f7f9fc;
+    border-left: 4px solid #0066FF;
+  }
+  .step-num {
+    width: 36px;
+    height: 36px;
+    background: #0066FF;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 15px; color: #0a1628; margin-bottom: 4px; }
+  .step-content p { font-size: 13px; color: #666; line-height: 1.5; }
+
+  /* Footer */
+  .footer {
+    background: #0a1628;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+  }
+
+  /* Print */
+  @media print {
+    .nav-bar, .toolbar, .status-select, .search-box, .filter-btn { display: none !important; }
+    .tab-panel { display: block !important; page-break-before: always; }
+    .header { padding: 30px; }
+    body { background: #fff; }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header { padding: 30px 20px; }
+    .header h1 { font-size: 24px; }
+    .stat-box { min-width: 120px; padding: 12px 16px; }
+    .stat-box .number { font-size: 24px; }
+    .nav-bar { padding: 0 10px; overflow-x: auto; }
+    .nav-btn { padding: 12px 16px; font-size: 12px; white-space: nowrap; }
+    .tab-panel { padding: 20px 16px; }
+    .table-wrapper { overflow-x: auto; }
+    table { min-width: 900px; }
+    .haro-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <h1>OJCommerce Backlink Prospect List</h1>
+  <p class="subtitle">Curated high-authority websites for guest posts, PR features & backlink opportunities</p>
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="number">40</div>
+      <div class="label">Total Prospects</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">20</div>
+      <div class="label">Tier 1 (DR 80+)</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">20</div>
+      <div class="label">Tier 2 (DR 60-80)</div>
+    </div>
+    <div class="stat-box">
+      <div class="number">6</div>
+      <div class="label">HARO Platforms</div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
+  <button class="nav-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
+  <button class="nav-btn" onclick="switchTab('haro')">HARO Platforms <span class="badge">6</span></button>
+  <button class="nav-btn" onclick="switchTab('priority')">Priority Guide</button>
+</div>
+
+<!-- Content -->
+<div class="content">
+
+  <!-- TIER 1 -->
+  <div class="tab-panel active" id="tab-tier1">
+    <div class="section-header">
+      <h2>Tier 1 — Major Publications</h2>
+      <span class="dr-badge tier1">DR 80+</span>
+    </div>
+    <div class="section-desc">
+      <strong>Highest value backlinks.</strong> These are major publications with massive authority. Most require freelance pitches or PR submissions — no open "Write for Us" pages. Getting one link from a Tier 1 site is worth 10+ links from smaller sites.
+    </div>
+
+    <div class="toolbar">
+      <input type="text" class="search-box" id="search-tier1" placeholder="Search by name, niche, or opportunity..." onkeyup="filterTable('tier1')">
+      <button class="filter-btn" onclick="filterNiche('tier1','all',this)">All</button>
+      <button class="filter-btn" onclick="filterNiche('tier1','decor',this)">Home Decor</button>
+      <button class="filter-btn" onclick="filterNiche('tier1','diy',this)">DIY</button>
+      <button class="filter-btn" onclick="filterNiche('tier1','arch',this)">Architecture</button>
+      <button class="filter-btn" onclick="filterNiche('tier1','lifestyle',this)">Lifestyle</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="table-tier1">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Website</th>
+            <th>DR</th>
+            <th>Niche</th>
+            <th>Opportunity</th>
+            <th>How to Get In</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-niche="decor lifestyle">
+            <td>1</td>
+            <td><span class="site-name">Better Homes & Gardens</span><a class="site-url" href="https://bhg.com" target="_blank">bhg.com</a></td>
+            <td><span class="dr-pill gold">92</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Email department editors<br>Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch design luxury">
+            <td>2</td>
+            <td><span class="site-name">Architectural Digest</span><a class="site-url" href="https://architecturaldigest.com" target="_blank">architecturaldigest.com</a></td>
+            <td><span class="dr-pill gold">91</span></td>
+            <td><span class="niche-tag arch">Architecture</span><span class="niche-tag luxury">Luxury</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Query letter + writing samples<br>to editor-in-chief</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor luxury design">
+            <td>3</td>
+            <td><span class="site-name">Elle Decor</span><a class="site-url" href="https://elledecor.com" target="_blank">elledecor.com</a></td>
+            <td><span class="dr-pill gold">88</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag luxury">Luxury</span></td>
+            <td><span class="opp-type pr">PR/Product</span></td>
+            <td class="contact-cell">Submit via <a href="https://bowerbird.io" target="_blank">BowerBird</a><br>or pitch editors directly</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>4</td>
+            <td><span class="site-name">House Beautiful</span><a class="site-url" href="https://housebeautiful.com" target="_blank">housebeautiful.com</a></td>
+            <td><span class="dr-pill gold">87</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch editors via email<br>Part of Hearst Media</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor lifestyle">
+            <td>5</td>
+            <td><span class="site-name">Real Simple</span><a class="site-url" href="https://realsimple.com" target="_blank">realsimple.com</a></td>
+            <td><span class="dr-pill gold">87</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch section editors<br>Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor lifestyle">
+            <td>6</td>
+            <td><span class="site-name">Martha Stewart</span><a class="site-url" href="https://marthastewart.com" target="_blank">marthastewart.com</a></td>
+            <td><span class="dr-pill gold">89</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch section editors<br>Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch design">
+            <td>7</td>
+            <td><span class="site-name">Dwell</span><a class="site-url" href="https://dwell.com" target="_blank">dwell.com</a></td>
+            <td><span class="dr-pill gold">82</span></td>
+            <td><span class="niche-tag arch">Architecture</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type submit">Open Submission</span></td>
+            <td class="contact-cell"><a href="https://dwell.com/article/how-to-submit-to-dwell-397833aa" target="_blank">Submit home tours with photos</a></td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor diy">
+            <td>8</td>
+            <td><span class="site-name">The Spruce</span><a class="site-url" href="https://thespruce.com" target="_blank">thespruce.com</a></td>
+            <td><span class="dr-pill gold">88</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag diy">DIY</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Apply via careers/freelance page<br>Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="diy">
+            <td>9</td>
+            <td><span class="site-name">Bob Vila</span><a class="site-url" href="https://bobvila.com" target="_blank">bobvila.com</a></td>
+            <td><span class="dr-pill gold">85</span></td>
+            <td><span class="niche-tag diy">DIY</span><span class="niche-tag furniture">Furniture</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Submit resume + 5 story ideas<br>+ byline links via Recurrent</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor diy">
+            <td>10</td>
+            <td><span class="site-name">HGTV</span><a class="site-url" href="https://hgtv.com" target="_blank">hgtv.com</a></td>
+            <td><span class="dr-pill gold">90</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag diy">DIY</span></td>
+            <td><span class="opp-type pr">PR/Media</span></td>
+            <td class="contact-cell">Pitch publicists or editors<br>Warner Bros. Discovery</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor arch design">
+            <td>11</td>
+            <td><span class="site-name">Houzz</span><a class="site-url" href="https://houzz.com" target="_blank">houzz.com</a></td>
+            <td><span class="dr-pill gold">92</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag arch">Architecture</span></td>
+            <td><span class="opp-type profile">Profile</span><span class="opp-type submit">Editorial</span></td>
+            <td class="contact-cell"><a href="https://houzz.com/editorialSubmissions" target="_blank">houzz.com/editorialSubmissions</a></td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="lifestyle">
+            <td>12</td>
+            <td><span class="site-name">Forbes Home</span><a class="site-url" href="https://forbes.com/home-improvement" target="_blank">forbes.com/home-improvement</a></td>
+            <td><span class="dr-pill gold">95</span></td>
+            <td><span class="niche-tag lifestyle">Lifestyle</span><span class="niche-tag diy">Home Improvement</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Apply through Forbes<br>contributor network</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor lifestyle">
+            <td>13</td>
+            <td><span class="site-name">Apartment Therapy</span><a class="site-url" href="https://apartmenttherapy.com" target="_blank">apartmenttherapy.com</a></td>
+            <td><span class="dr-pill gold">87</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span><span class="opp-type submit">Home Tours</span></td>
+            <td class="contact-cell">Pitch editors directly<br>Submit home tours via site</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design lifestyle">
+            <td>14</td>
+            <td><span class="site-name">Domino</span><a class="site-url" href="https://domino.com" target="_blank">domino.com</a></td>
+            <td><span class="dr-pill gold">80</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch editors directly<br>via email</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>15</td>
+            <td><span class="site-name">Remodelista</span><a class="site-url" href="https://remodelista.com" target="_blank">remodelista.com</a></td>
+            <td><span class="dr-pill gold">81</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pr">PR/Product</span></td>
+            <td class="contact-cell">Contact editors for product<br>inclusion or expert quotes</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor lifestyle">
+            <td>16</td>
+            <td><span class="site-name">Country Living</span><a class="site-url" href="https://countryliving.com" target="_blank">countryliving.com</a></td>
+            <td><span class="dr-pill gold">86</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Hearst<br>Pitch section editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor luxury">
+            <td>17</td>
+            <td><span class="site-name">Veranda</span><a class="site-url" href="https://veranda.com" target="_blank">veranda.com</a></td>
+            <td><span class="dr-pill gold">80</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag luxury">Luxury</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Hearst<br>Pitch editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="diy">
+            <td>18</td>
+            <td><span class="site-name">This Old House</span><a class="site-url" href="https://thisoldhouse.com" target="_blank">thisoldhouse.com</a></td>
+            <td><span class="dr-pill gold">84</span></td>
+            <td><span class="niche-tag diy">DIY</span><span class="niche-tag furniture">Furniture</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span><span class="opp-type pr">Product Reviews</span></td>
+            <td class="contact-cell">Pitch editors<br>Trusted Media Brands</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="diy">
+            <td>19</td>
+            <td><span class="site-name">Family Handyman</span><a class="site-url" href="https://familyhandyman.com" target="_blank">familyhandyman.com</a></td>
+            <td><span class="dr-pill gold">84</span></td>
+            <td><span class="niche-tag diy">DIY</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Submit via contributor<br>guidelines on site</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch lifestyle">
+            <td>20</td>
+            <td><span class="site-name">Curbed</span><a class="site-url" href="https://curbed.com" target="_blank">curbed.com</a></td>
+            <td><span class="dr-pill gold">83</span></td>
+            <td><span class="niche-tag arch">Architecture</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Vox Media<br>Pitch editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIER 2 -->
+  <div class="tab-panel" id="tab-tier2">
+    <div class="section-header">
+      <h2>Tier 2 — Strong Authority Sites</h2>
+      <span class="dr-badge tier2">DR 60-80</span>
+    </div>
+    <div class="section-desc">
+      <strong>Best balance of effort vs. reward.</strong> Many have contributor programs or accept direct pitches. Some have open guest post pages. These are your primary outreach targets — realistic to get published with solid SEO value.
+    </div>
+
+    <div class="toolbar">
+      <input type="text" class="search-box" id="search-tier2" placeholder="Search by name, niche, or opportunity..." onkeyup="filterTable('tier2')">
+      <button class="filter-btn" onclick="filterNiche('tier2','all',this)">All</button>
+      <button class="filter-btn" onclick="filterNiche('tier2','decor',this)">Home Decor</button>
+      <button class="filter-btn" onclick="filterNiche('tier2','design',this)">Design</button>
+      <button class="filter-btn" onclick="filterNiche('tier2','arch',this)">Architecture</button>
+      <button class="filter-btn" onclick="filterNiche('tier2','furniture',this)">Furniture</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table id="table-tier2">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Website</th>
+            <th>DR</th>
+            <th>Niche</th>
+            <th>Opportunity</th>
+            <th>How to Get In</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-niche="decor design furniture">
+            <td>1</td>
+            <td><span class="site-name">Homedit</span><a class="site-url" href="https://homedit.com" target="_blank">homedit.com</a></td>
+            <td><span class="dr-pill blue">72</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag furniture">Furniture</span></td>
+            <td><span class="opp-type guest">Guest Post</span></td>
+            <td class="contact-cell">Submit via contact page</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="design">
+            <td>2</td>
+            <td><span class="site-name">Design Milk</span><a class="site-url" href="https://design-milk.com" target="_blank">design-milk.com</a></td>
+            <td><span class="dr-pill blue">75</span></td>
+            <td><span class="niche-tag design">Design</span><span class="niche-tag furniture">Furniture</span></td>
+            <td><span class="opp-type pr">Product Feature</span></td>
+            <td class="contact-cell">Submit via submissions page</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>3</td>
+            <td><span class="site-name">Decoist</span><a class="site-url" href="https://decoist.com" target="_blank">decoist.com</a></td>
+            <td><span class="dr-pill blue">68</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pr">Product Roundups</span></td>
+            <td class="contact-cell">Contact editorial team</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="design furniture">
+            <td>4</td>
+            <td><span class="site-name">Trendir</span><a class="site-url" href="https://trendir.com" target="_blank">trendir.com</a></td>
+            <td><span class="dr-pill blue">65</span></td>
+            <td><span class="niche-tag design">Design</span><span class="niche-tag furniture">Furniture</span></td>
+            <td><span class="opp-type pr">Product Feature</span></td>
+            <td class="contact-cell">Contact via site<br>Press submissions</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor lifestyle">
+            <td>5</td>
+            <td><span class="site-name">MyDomaine</span><a class="site-url" href="https://mydomaine.com" target="_blank">mydomaine.com</a></td>
+            <td><span class="dr-pill blue">73</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Apply as freelancer<br>Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor diy design">
+            <td>6</td>
+            <td><span class="site-name">Hunker</span><a class="site-url" href="https://hunker.com" target="_blank">hunker.com</a></td>
+            <td><span class="dr-pill blue">71</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag diy">DIY</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Apply as freelance writer<br>Part of Leaf Group</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design lifestyle">
+            <td>7</td>
+            <td><span class="site-name">Lonny</span><a class="site-url" href="https://lonny.com" target="_blank">lonny.com</a></td>
+            <td><span class="dr-pill blue">67</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch editors directly</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch">
+            <td>8</td>
+            <td><span class="site-name">Architectural Record</span><a class="site-url" href="https://architecturalrecord.com" target="_blank">architecturalrecord.com</a></td>
+            <td><span class="dr-pill blue">78</span></td>
+            <td><span class="niche-tag arch">Architecture</span></td>
+            <td><span class="opp-type submit">Project Submission</span></td>
+            <td class="contact-cell"><a href="https://architecturalrecord.com/call4entries/forPublication" target="_blank">Submit for publication</a></td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch design">
+            <td>9</td>
+            <td><span class="site-name">Dezeen</span><a class="site-url" href="https://dezeen.com" target="_blank">dezeen.com</a></td>
+            <td><span class="dr-pill blue">80</span></td>
+            <td><span class="niche-tag arch">Architecture</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type submit">Press Submission</span></td>
+            <td class="contact-cell">Submit via press<br>submission form</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="arch design">
+            <td>10</td>
+            <td><span class="site-name">ArchDaily</span><a class="site-url" href="https://archdaily.com" target="_blank">archdaily.com</a></td>
+            <td><span class="dr-pill blue">79</span></td>
+            <td><span class="niche-tag arch">Architecture</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type submit">Project Submission</span></td>
+            <td class="contact-cell">Submit projects and<br>product press releases</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="realestate">
+            <td>11</td>
+            <td><span class="site-name">Inman</span><a class="site-url" href="https://inman.com" target="_blank">inman.com</a></td>
+            <td><span class="dr-pill blue">73</span></td>
+            <td><span class="niche-tag realestate">Real Estate</span></td>
+            <td><span class="opp-type contrib">Guest Contributor</span></td>
+            <td class="contact-cell">Apply as guest contributor<br>Reportedly easy to start</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="realestate decor">
+            <td>12</td>
+            <td><span class="site-name">Realtor.com Magazine</span><a class="site-url" href="https://realtor.com/advice" target="_blank">realtor.com/advice</a></td>
+            <td><span class="dr-pill blue">78</span></td>
+            <td><span class="niche-tag realestate">Real Estate</span><span class="niche-tag decor">Home Decor</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Pitch home/lifestyle editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="lifestyle decor">
+            <td>13</td>
+            <td><span class="site-name">HuffPost Home</span><a class="site-url" href="https://huffpost.com/section/home" target="_blank">huffpost.com/section/home</a></td>
+            <td><span class="dr-pill blue">78</span></td>
+            <td><span class="niche-tag lifestyle">Lifestyle</span><span class="niche-tag decor">Home Decor</span></td>
+            <td><span class="opp-type contrib">Contributor</span></td>
+            <td class="contact-cell">Apply as HuffPost<br>contributor</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="furniture design">
+            <td>14</td>
+            <td><span class="site-name">Chairish Blog</span><a class="site-url" href="https://blog.chairish.com" target="_blank">blog.chairish.com</a></td>
+            <td><span class="dr-pill blue">70</span></td>
+            <td><span class="niche-tag furniture">Furniture</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pr">PR/Product</span></td>
+            <td class="contact-cell"><a href="https://support.chairish.com/hc/en-us/articles/115006637368-Press" target="_blank">Press contact page</a></td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="furniture design">
+            <td>15</td>
+            <td><span class="site-name">Smithers of Stamford</span><a class="site-url" href="https://smithersofstamford.com" target="_blank">smithersofstamford.com</a></td>
+            <td><span class="dr-pill blue">62</span></td>
+            <td><span class="niche-tag furniture">Furniture</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type guest">Guest Post OPEN</span></td>
+            <td class="contact-cell">Email <a href="mailto:gp@smithersofstamford.com">gp@smithersofstamford.com</a><br>400-800 word articles</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design lifestyle">
+            <td>16</td>
+            <td><span class="site-name">Decor8</span><a class="site-url" href="https://decor8blog.com" target="_blank">decor8blog.com</a></td>
+            <td><span class="dr-pill blue">64</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag lifestyle">Lifestyle</span></td>
+            <td><span class="opp-type pitch">Contributor Pitch</span></td>
+            <td class="contact-cell">Founded by Holly Becker<br>Contact via site</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="diy">
+            <td>17</td>
+            <td><span class="site-name">Fine Homebuilding</span><a class="site-url" href="https://finehomebuilding.com" target="_blank">finehomebuilding.com</a></td>
+            <td><span class="dr-pill blue">72</span></td>
+            <td><span class="niche-tag diy">DIY</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Taunton Press<br>Pitch editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>18</td>
+            <td><span class="site-name">Traditional Home</span><a class="site-url" href="https://traditionalhome.com" target="_blank">traditionalhome.com</a></td>
+            <td><span class="dr-pill blue">69</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Dotdash Meredith</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>19</td>
+            <td><span class="site-name">Freshome / MyMove</span><a class="site-url" href="https://mymove.com" target="_blank">mymove.com</a></td>
+            <td><span class="dr-pill blue">71</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type pitch">Freelance Pitch</span></td>
+            <td class="contact-cell">Part of Red Ventures<br>Pitch editors</td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+          <tr data-niche="decor design">
+            <td>20</td>
+            <td><span class="site-name">Home & Design Magazine</span><a class="site-url" href="https://homeanddesign.com" target="_blank">homeanddesign.com</a></td>
+            <td><span class="dr-pill blue">63</span></td>
+            <td><span class="niche-tag decor">Home Decor</span><span class="niche-tag design">Design</span></td>
+            <td><span class="opp-type guest">Guest Post OPEN</span></td>
+            <td class="contact-cell"><a href="mailto:editorial@homeanddesign.com">editorial@homeanddesign.com</a><br><a href="https://homeanddesign.com/write-for-us-home-design/" target="_blank">Write for Us page</a></td>
+            <td><select class="status-select not-started" onchange="updateStatus(this)"><option>Not Started</option><option>Pitched</option><option>Replied</option><option>Accepted</option><option>Rejected</option><option>Published</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HARO -->
+  <div class="tab-panel" id="tab-haro">
+    <div class="section-header">
+      <h2>HARO-Style Platforms</h2>
+    </div>
+    <div class="section-desc">
+      <strong>Get featured in major publications without writing full articles.</strong> These platforms connect you with journalists looking for expert quotes. You respond with a 4-5 sentence quote, and if selected, you get a backlink from DR 80-95 sites like Fortune, Yahoo, and Fast Company.
+    </div>
+
+    <div class="haro-grid">
+      <div class="haro-card">
+        <h3>Featured.com</h3>
+        <a class="haro-url" href="https://featured.com" target="_blank">featured.com</a>
+        <p>Acquired the HARO brand in 2025. Respond to journalist queries with 4-5 sentence expert quotes. Placements in <strong>Fortune, Fast Company, Yahoo, Zapier</strong> and more.</p>
+        <span class="cost-badge freemium">Free Tier Available</span>
+      </div>
+      <div class="haro-card">
+        <h3>Source of Sources (SOS)</h3>
+        <a class="haro-url" href="https://sourceofsources.com" target="_blank">sourceofsources.com</a>
+        <p>Founded by HARO's original creator <strong>Peter Shankman</strong>. Sends journalist requests 3x daily via email. Trusted and high-quality queries.</p>
+        <span class="cost-badge free">100% Free</span>
+      </div>
+      <div class="haro-card">
+        <h3>Qwoted</h3>
+        <a class="haro-url" href="https://qwoted.com" target="_blank">qwoted.com</a>
+        <p>Connects brands and experts with journalists. Strong query matching algorithm. Great for <strong>lifestyle, home, and business</strong> niches.</p>
+        <span class="cost-badge freemium">Free Tier / Paid from $149/mo</span>
+      </div>
+      <div class="haro-card">
+        <h3>SourceBottle</h3>
+        <a class="haro-url" href="https://sourcebottle.com" target="_blank">sourcebottle.com</a>
+        <p>Popular globally, especially in Australia/NZ. Covers <strong>lifestyle, home, business</strong> industries. Good volume of relevant queries.</p>
+        <span class="cost-badge freemium">Free & Premium Tiers</span>
+      </div>
+      <div class="haro-card" style="border-top-color: #D4AF37;">
+        <h3>BowerBird</h3>
+        <a class="haro-url" href="https://bowerbird.io" target="_blank">bowerbird.io</a>
+        <p><strong>Built specifically for home/design industry.</strong> Submit projects directly to publications like Architectural Digest, Elle Decor, and House Beautiful.</p>
+        <span class="cost-badge paid">Paid Plans</span>
+      </div>
+      <div class="haro-card">
+        <h3>Press Hook</h3>
+        <a class="haro-url" href="https://presshook.com" target="_blank">presshook.com</a>
+        <p>Connects <strong>product-based brands</strong> with journalists, editors, and influencers for media coverage. Ideal for e-commerce brands like OJCommerce.</p>
+        <span class="cost-badge paid">Paid Plans</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRIORITY GUIDE -->
+  <div class="tab-panel" id="tab-priority">
+    <div class="section-header">
+      <h2>Priority Action Guide</h2>
+    </div>
+    <div class="section-desc">
+      <strong>Follow this order for maximum results.</strong> Start with quick wins and free platforms, then work your way up to high-authority publications.
+    </div>
+
+    <div class="priority-section">
+      <h3>Recommended Outreach Order</h3>
+      <div class="priority-steps">
+        <div class="priority-step" style="border-left-color: #10B981;">
+          <div class="step-num" style="background: #10B981;">1</div>
+          <div class="step-content">
+            <h4>Sign Up for Featured.com + Source of Sources (Week 1)</h4>
+            <p>Both are free. Start responding to journalist queries immediately. One placement can earn a DR 90+ backlink from Fortune, Yahoo, or Fast Company. This is the highest ROI activity.</p>
+          </div>
+        </div>
+        <div class="priority-step" style="border-left-color: #0066FF;">
+          <div class="step-num" style="background: #0066FF;">2</div>
+          <div class="step-content">
+            <h4>Submit to Tier 2 Open Guest Post Sites (Week 1-2)</h4>
+            <p>Home & Design Magazine and Smithers of Stamford have open "Write for Us" pages. Write and submit 2-3 articles. These are the easiest wins in the DR 60+ range.</p>
+          </div>
+        </div>
+        <div class="priority-step" style="border-left-color: #8B5CF6;">
+          <div class="step-num" style="background: #8B5CF6;">3</div>
+          <div class="step-content">
+            <h4>Pitch Tier 2 Contributor Programs (Week 2-4)</h4>
+            <p>Apply as a freelance contributor to Homedit, Hunker, Design Milk, and MyDomaine. These sites have active contributor programs and publish frequently.</p>
+          </div>
+        </div>
+        <div class="priority-step" style="border-left-color: #F59E0B;">
+          <div class="step-num" style="background: #F59E0B;">4</div>
+          <div class="step-content">
+            <h4>Create BowerBird Profile (Week 2-3)</h4>
+            <p>BowerBird is purpose-built for the home/design industry. It connects directly to Architectural Digest, Elle Decor, and House Beautiful. Essential for a furniture brand.</p>
+          </div>
+        </div>
+        <div class="priority-step" style="border-left-color: #EF4444;">
+          <div class="step-num" style="background: #EF4444;">5</div>
+          <div class="step-content">
+            <h4>Pitch Tier 1 Publications (Month 2+)</h4>
+            <p>Once you have 3-5 published articles from Tier 2 sites as writing samples, start pitching Apartment Therapy, Dwell, Houzz, and The Spruce. Use your published pieces as proof of quality.</p>
+          </div>
+        </div>
+        <div class="priority-step" style="border-left-color: #D4AF37;">
+          <div class="step-num" style="background: #D4AF37;">6</div>
+          <div class="step-content">
+            <h4>Target Major Publications (Month 3+)</h4>
+            <p>With a portfolio of published articles, pitch Better Homes & Gardens, Architectural Digest, Real Simple, and Forbes Home. These are long-term targets — one link from these sites is worth months of effort.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  OJCommerce Backlink Prospect List &bull; Generated February 2026 &bull; Update status as you reach out
+</div>
+
+<script>
+// Tab switching
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  event.target.closest('.nav-btn').classList.add('active');
+}
+
+// Search filter
+function filterTable(tier) {
+  const query = document.getElementById('search-' + tier).value.toLowerCase();
+  const rows = document.querySelectorAll('#table-' + tier + ' tbody tr');
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(query) ? '' : 'none';
+  });
+}
+
+// Niche filter
+let activeFilters = { tier1: 'all', tier2: 'all' };
+function filterNiche(tier, niche, btn) {
+  activeFilters[tier] = niche;
+  const toolbar = btn.closest('.toolbar');
+  toolbar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const rows = document.querySelectorAll('#table-' + tier + ' tbody tr');
+  rows.forEach(row => {
+    if (niche === 'all') {
+      row.style.display = '';
+    } else {
+      const rowNiche = row.getAttribute('data-niche') || '';
+      row.style.display = rowNiche.includes(niche) ? '' : 'none';
+    }
+  });
+}
+
+// Status update with color coding
+function updateStatus(select) {
+  const val = select.value.toLowerCase().replace(' ', '-');
+  select.className = 'status-select ' + (val === 'not-started' ? 'not-started' : val);
+  saveData();
+}
+
+// LocalStorage save/load
+function saveData() {
+  const data = {};
+  document.querySelectorAll('.status-select').forEach((sel, i) => {
+    data['status-' + i] = sel.value;
+  });
+  localStorage.setItem('ojcommerce-prospects', JSON.stringify(data));
+}
+
+function loadData() {
+  const data = JSON.parse(localStorage.getItem('ojcommerce-prospects') || '{}');
+  document.querySelectorAll('.status-select').forEach((sel, i) => {
+    if (data['status-' + i]) {
+      sel.value = data['status-' + i];
+      const val = sel.value.toLowerCase().replace(' ', '-');
+      sel.className = 'status-select ' + (val === 'not-started' ? 'not-started' : val);
+    }
+  });
+}
+
+// Init
+loadData();
+</script>
+
+</body>
+</html>
