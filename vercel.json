@@ -1,19 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "outreach/dashboard.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "outreach/replies_log.csv",
-      "use": "@vercel/static"
-    }
-  ],
   "routes": [
     {
       "src": "/",
