@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OJCommerce Outreach Dashboard (Month 1)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f4f8; color: #333; }
+  .header {
+    background: linear-gradient(135deg, #0a1628 0%, #1a365d 50%, #0066FF 100%);
+    padding: 40px 40px 30px;
+    color: #fff;
+  }
+  .header h1 { font-size: 28px; font-weight: 800; margin-bottom: 4px; }
+  .header .sub { font-size: 14px; color: #a0c4ff; margin-bottom: 20px; }
+  .stats { display: flex; gap: 16px; flex-wrap: wrap; }
+  .stat {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 14px 24px;
+    text-align: center;
+    min-width: 130px;
+  }
+  .stat .num { font-size: 28px; font-weight: 800; }
+  .stat .num.green { color: #00C9A7; }
+  .stat .num.blue { color: #60a5fa; }
+  .stat .num.yellow { color: #fbbf24; }
+  .stat .num.red { color: #f87171; }
+  .stat .num.purple { color: #a78bfa; }
+  .stat .lbl { font-size: 11px; color: #a0c4ff; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+
+  .container { max-width: 1500px; margin: 0 auto; padding: 24px 30px 60px; }
+
+  .tabs { display: flex; gap: 4px; margin-bottom: 20px; }
+  .tab-btn {
+    padding: 10px 24px; border: none; background: #fff; color: #555;
+    font-size: 14px; font-weight: 600; cursor: pointer; border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent; transition: all 0.2s;
+  }
+  .tab-btn:hover { color: #0066FF; }
+  .tab-btn.active { color: #0066FF; border-bottom-color: #0066FF; background: #fff; }
+  .tab-btn .badge {
+    background: #0066FF; color: #fff; font-size: 11px; padding: 2px 8px;
+    border-radius: 10px; margin-left: 6px;
+  }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  .card {
+    background: #fff; border-radius: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    overflow: hidden; margin-bottom: 24px;
+  }
+  .card-title {
+    background: #0a1628; color: #fff; padding: 14px 20px; font-size: 14px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th {
+    background: #0a1628; color: #fff; padding: 12px 14px; text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;
+    position: sticky; top: 0;
+  }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.15s; }
+  tbody tr:hover { background: #f0f7ff; }
+  tbody td { padding: 12px 14px; vertical-align: middle; }
+
+  .updated { color: #94a3b8; font-size: 12px; text-align: right; margin-top: 20px; }
+
+  @media (max-width: 768px) {
+    .header { padding: 24px 16px; }
+    .container { padding: 16px; }
+    .stats { gap: 8px; }
+    .stat { min-width: 100px; padding: 10px 14px; }
+    .stat .num { font-size: 22px; }
+    .card { overflow-x: auto; }
+    table { min-width: 900px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>OJCommerce Outreach Dashboard (Month 1)</h1>
+  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 04:50 PM)</span></p>
+  <div class="stats">
+    <div class="stat"><div class="num green">40</div><div class="lbl">Total Prospects</div></div>
+    <div class="stat"><div class="num blue">17</div><div class="lbl">Pitched</div></div>
+    <div class="stat"><div class="num green">23</div><div class="lbl">Emails Sent</div></div>
+    <div class="stat"><div class="num red">0</div><div class="lbl">Failed</div></div>
+    <div class="stat"><div class="num yellow">2</div><div class="lbl">Replied</div></div>
+    <div class="stat"><div class="num green">0</div><div class="lbl">Accepted</div></div>
+    <div class="stat"><div class="num purple">0</div><div class="lbl">Published</div></div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
+    <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
+    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">30</span></button>
+    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">2</span></button>
+  </div>
+
+  <div class="panel active" id="panel-tier1">
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Website</th><th>DR</th><th>Niche</th><th>Opportunity</th><th>Email</th><th>Status</th><th>Send History</th>
+        </tr></thead>
+        <tbody><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">1</td>
+            <td><strong style="color:#0a1628;">Dwell</strong><br><a href="https://dwell.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">dwell.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">82</span></td>
+            <td style="font-size:12px;">Architecture, Design</td>
+            <td style="font-size:12px;">Open Submission</td>
+            <td style="font-size:12px;">edit@dwell.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 12:12 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">2</td>
+            <td><strong style="color:#0a1628;">Domino</strong><br><a href="https://domino.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">domino.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">80</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">pitches@domino.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 12:19 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">3</td>
+            <td><strong style="color:#0a1628;">Remodelista</strong><br><a href="https://remodelista.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">remodelista.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">81</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">PR/Product</td>
+            <td style="font-size:12px;">editorial@remodelista.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:36 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">4</td>
+            <td><strong style="color:#0a1628;">Family Handyman</strong><br><a href="https://familyhandyman.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">familyhandyman.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">84</span></td>
+            <td style="font-size:12px;">DIY</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">submissions@familyhandyman.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:46 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">5</td>
+            <td><strong style="color:#0a1628;">Bob Vila</strong><br><a href="https://bobvila.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">bobvila.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">85</span></td>
+            <td style="font-size:12px;">DIY, Furniture</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">contact@bobvila.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:36 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">6</td>
+            <td><strong style="color:#0a1628;">This Old House</strong><br><a href="https://thisoldhouse.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">thisoldhouse.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">84</span></td>
+            <td style="font-size:12px;">DIY, Furniture</td>
+            <td style="font-size:12px;">Freelance Pitch/Product Reviews</td>
+            <td style="font-size:12px;">contact@thisoldhouse.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:41 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">7</td>
+            <td><strong style="color:#0a1628;">Apartment Therapy</strong><br><a href="https://apartmenttherapy.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">apartmenttherapy.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">87</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch/Home Tours</td>
+            <td style="font-size:12px;">lizzy.francis@apartmenttherapy.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:41 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">8</td>
+            <td><strong style="color:#0a1628;">Curbed</strong><br><a href="https://curbed.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">curbed.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">83</span></td>
+            <td style="font-size:12px;">Architecture, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">curbed@nymag.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:41 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">9</td>
+            <td><strong style="color:#0a1628;">House Beautiful</strong><br><a href="https://housebeautiful.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">housebeautiful.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">87</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">hbsubmissions@hearst.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">10</td>
+            <td><strong style="color:#0a1628;">Elle Decor</strong><br><a href="https://elledecor.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">elledecor.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">88</span></td>
+            <td style="font-size:12px;">Home Decor, Luxury</td>
+            <td style="font-size:12px;">PR/Product</td>
+            <td style="font-size:12px;">elledecor@hearst.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">11</td>
+            <td><strong style="color:#0a1628;">HGTV</strong><br><a href="https://hgtv.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">hgtv.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">90</span></td>
+            <td style="font-size:12px;">Home Decor, DIY</td>
+            <td style="font-size:12px;">PR/Media</td>
+            <td style="font-size:12px;">hgtvmagazine@hearst.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">12</td>
+            <td><strong style="color:#0a1628;">Country Living</strong><br><a href="https://countryliving.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">countryliving.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">86</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">countryliving@hearst.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">13</td>
+            <td><strong style="color:#0a1628;">Veranda</strong><br><a href="https://veranda.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">veranda.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">80</span></td>
+            <td style="font-size:12px;">Home Decor, Luxury</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">veranda@hearst.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">14</td>
+            <td><strong style="color:#0a1628;">Better Homes & Gardens</strong><br><a href="https://bhg.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">bhg.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">92</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">bhgeditor@meredith.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">15</td>
+            <td><strong style="color:#0a1628;">Real Simple</strong><br><a href="https://realsimple.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">realsimple.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">87</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">letters@realsimple.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">16</td>
+            <td><strong style="color:#0a1628;">Martha Stewart</strong><br><a href="https://marthastewart.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">marthastewart.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">89</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">mslletters@meredith.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">17</td>
+            <td><strong style="color:#0a1628;">The Spruce</strong><br><a href="https://thespruce.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">thespruce.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">88</span></td>
+            <td style="font-size:12px;">Home Decor, DIY</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">pitch@thespruce.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:46 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">18</td>
+            <td><strong style="color:#0a1628;">Architectural Digest</strong><br><a href="https://architecturaldigest.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">architecturaldigest.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">91</span></td>
+            <td style="font-size:12px;">Architecture, Luxury</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">Sydney_Gore@condenast.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">19</td>
+            <td><strong style="color:#0a1628;">Forbes Home</strong><br><a href="https://forbes.com/home-improvement" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">forbes.com/home-improvement</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">95</span></td>
+            <td style="font-size:12px;">Lifestyle, Home Improvement</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">ideas@forbes.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">20</td>
+            <td><strong style="color:#0a1628;">Houzz</strong><br><a href="https://houzz.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">houzz.com</a></td>
+            <td><span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">92</span></td>
+            <td style="font-size:12px;">Home Decor, Architecture</td>
+            <td style="font-size:12px;">Profile/Editorial</td>
+            <td style="font-size:12px;">editor@houzz.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-tier2">
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Website</th><th>DR</th><th>Niche</th><th>Opportunity</th><th>Email</th><th>Status</th><th>Send History</th>
+        </tr></thead>
+        <tbody><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">1</td>
+            <td><strong style="color:#0a1628;">Smithers of Stamford</strong><br><a href="https://smithersofstamford.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">smithersofstamford.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">62</span></td>
+            <td style="font-size:12px;">Furniture, Design</td>
+            <td style="font-size:12px;">Guest Post OPEN</td>
+            <td style="font-size:12px;">gp@smithersofstamford.com</td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 11:52 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-05 13:52 — reply-detected</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-09 11:11 — reply-detected</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-09 15:53 — reply-detected</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">2</td>
+            <td><strong style="color:#0a1628;">Home & Design Magazine</strong><br><a href="https://homeanddesign.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">homeanddesign.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">63</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">Guest Post OPEN</td>
+            <td style="font-size:12px;">editorial@homeanddesign.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 11:57 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">3</td>
+            <td><strong style="color:#0a1628;">Lonny</strong><br><a href="https://lonny.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">lonny.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">67</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">submissions@lonny.com</td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 12:19 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-05 12:31 — reply-detected</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-05 12:32 — reply-detected</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-09 11:11 — reply-detected</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-09 15:53 — reply-detected</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">4</td>
+            <td><strong style="color:#0a1628;">Decor8</strong><br><a href="https://decor8blog.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">decor8blog.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">64</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Contributor Pitch</td>
+            <td style="font-size:12px;">holly@decor8blog.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 12:19 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">5</td>
+            <td><strong style="color:#0a1628;">Dezeen</strong><br><a href="https://dezeen.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">dezeen.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">80</span></td>
+            <td style="font-size:12px;">Architecture, Design</td>
+            <td style="font-size:12px;">Press Submission</td>
+            <td style="font-size:12px;">press@dezeen.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">6</td>
+            <td><strong style="color:#0a1628;">Design Milk</strong><br><a href="https://design-milk.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">design-milk.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">75</span></td>
+            <td style="font-size:12px;">Design, Furniture</td>
+            <td style="font-size:12px;">Product Feature</td>
+            <td style="font-size:12px;">info@design-milk.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-05 12:24 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:11 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">7</td>
+            <td><strong style="color:#0a1628;">Chairish Blog</strong><br><a href="https://blog.chairish.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">blog.chairish.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">70</span></td>
+            <td style="font-size:12px;">Furniture, Design</td>
+            <td style="font-size:12px;">PR/Product</td>
+            <td style="font-size:12px;">press@chairish.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">8</td>
+            <td><strong style="color:#0a1628;">Inman</strong><br><a href="https://inman.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">inman.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">73</span></td>
+            <td style="font-size:12px;">Real Estate</td>
+            <td style="font-size:12px;">Guest Contributor</td>
+            <td style="font-size:12px;">contributors@inman.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:46 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">9</td>
+            <td><strong style="color:#0a1628;">HuffPost Home</strong><br><a href="https://huffpost.com/section/home" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">huffpost.com/section/home</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">78</span></td>
+            <td style="font-size:12px;">Lifestyle, Home Decor</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">pitch@huffpost.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:21 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">10</td>
+            <td><strong style="color:#0a1628;">Fine Homebuilding</strong><br><a href="https://finehomebuilding.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">finehomebuilding.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">72</span></td>
+            <td style="font-size:12px;">DIY</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">fh@taunton.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">11</td>
+            <td><strong style="color:#0a1628;">Architectural Record</strong><br><a href="https://architecturalrecord.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">architecturalrecord.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">78</span></td>
+            <td style="font-size:12px;">Architecture</td>
+            <td style="font-size:12px;">Project Submission</td>
+            <td style="font-size:12px;">arcallforentries@bnpmedia.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">12</td>
+            <td><strong style="color:#0a1628;">ArchDaily</strong><br><a href="https://archdaily.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">archdaily.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">79</span></td>
+            <td style="font-size:12px;">Architecture, Design</td>
+            <td style="font-size:12px;">Project Submission</td>
+            <td style="font-size:12px;">submit@archdaily.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">13</td>
+            <td><strong style="color:#0a1628;">Traditional Home</strong><br><a href="https://traditionalhome.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">traditionalhome.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">69</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">traditionalhome@meredith.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">14</td>
+            <td><strong style="color:#0a1628;">MyDomaine</strong><br><a href="https://mydomaine.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">mydomaine.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">73</span></td>
+            <td style="font-size:12px;">Home Decor, Lifestyle</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">dotdashbrands@dotdash.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">15</td>
+            <td><strong style="color:#0a1628;">Homedit</strong><br><a href="https://homedit.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">homedit.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">72</span></td>
+            <td style="font-size:12px;">Home Decor, Furniture</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">contact@homedit.com</td>
+            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:21 — hostinger-sent</div></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">16</td>
+            <td><strong style="color:#0a1628;">Hunker</strong><br><a href="https://hunker.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">hunker.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">71</span></td>
+            <td style="font-size:12px;">Home Decor, DIY</td>
+            <td style="font-size:12px;">Contributor</td>
+            <td style="font-size:12px;">staff@hunker.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">17</td>
+            <td><strong style="color:#0a1628;">Decoist</strong><br><a href="https://decoist.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">decoist.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">68</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">Product Roundups</td>
+            <td style="font-size:12px;">contact@decoist.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">18</td>
+            <td><strong style="color:#0a1628;">Trendir</strong><br><a href="https://trendir.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">trendir.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">65</span></td>
+            <td style="font-size:12px;">Design, Furniture</td>
+            <td style="font-size:12px;">Product Feature</td>
+            <td style="font-size:12px;">contact@trendir.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">19</td>
+            <td><strong style="color:#0a1628;">Realtor.com Magazine</strong><br><a href="https://realtor.com/advice" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">realtor.com/advice</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">78</span></td>
+            <td style="font-size:12px;">Real Estate, Home Decor</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;">feedback@move.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">20</td>
+            <td><strong style="color:#0a1628;">Freshome / MyMove</strong><br><a href="https://mymove.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">mymove.com</a></td>
+            <td><span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">71</span></td>
+            <td style="font-size:12px;">Home Decor, Design</td>
+            <td style="font-size:12px;">Freelance Pitch</td>
+            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-log">
+    <div class="card">
+      <div class="card-title">Recent Activity (Last 20)</div>
+      <table>
+        <thead><tr>
+          <th>Time</th><th>Prospect</th><th>Template</th><th>Email</th><th>Result</th>
+        </tr></thead>
+        <tbody><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:41</td>
+            <td style="font-size:12px;"><strong>Curbed</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">curbed@nymag.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:41</td>
+            <td style="font-size:12px;"><strong>Apartment Therapy</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">lizzy.francis@apartmenttherapy.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:41</td>
+            <td style="font-size:12px;"><strong>This Old House</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">contact@thisoldhouse.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:36</td>
+            <td style="font-size:12px;"><strong>Bob Vila</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">contact@bobvila.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:36</td>
+            <td style="font-size:12px;"><strong>Remodelista</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">editorial@remodelista.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 15:53</td>
+            <td style="font-size:12px;"><strong>Smithers of Stamford</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">gp@smithersofstamford.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 15:53</td>
+            <td style="font-size:12px;"><strong>Lonny</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">submissions@lonny.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:46</td>
+            <td style="font-size:12px;"><strong>Family Handyman</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">submissions@familyhandyman.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:46</td>
+            <td style="font-size:12px;"><strong>The Spruce</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">pitch@thespruce.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:46</td>
+            <td style="font-size:12px;"><strong>Inman</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">contributors@inman.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:21</td>
+            <td style="font-size:12px;"><strong>HuffPost Home</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">pitch@huffpost.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:21</td>
+            <td style="font-size:12px;"><strong>Homedit</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">contact@homedit.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Smithers of Stamford</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">gp@smithersofstamford.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Lonny</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">submissions@lonny.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Lonny</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">submissions@lonny.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Design Milk</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">info@design-milk.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Decor8</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">holly@decor8blog.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Domino</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">pitches@domino.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Dwell</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">edit@dwell.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
+            <td style="font-size:12px;"><strong>Home & Design Magazine</strong></td>
+            <td style="font-size:12px;">hostinger-sent</td>
+            <td style="font-size:12px;">editorial@homeanddesign.com</td>
+            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-replies">
+    
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Smithers of Stamford</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">gp@smithersofstamford.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-03-11 16:51</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Re: Guest Post Submission: Industrial Style Furniture — How to Get the Look at Home</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">*Hello*, Please find attached our* Terms and Conditions*. We kindly ask<br>that you *review them carefully.* If you have any questions, please ensure<br>they are not already addressed in our document before reaching out. !!<br><br>Kind Regards<br><br>SM<br><br><br><br><br>On Thu, 5 Mar 2026 at 06:19, shamiq@bygweb.com &lt;shamiq@bygweb.com&gt; wrote:<br><br>&gt; Industrial Style Furniture: How to Get the Look at Home<br>&gt;<br>&gt;   Industrial style furniture has moved from converted lofts and warehouse<br>&gt; apartments into mainstream home design. The raw, unfinished aesthetic that<br>&gt; defined factory spaces now<br>&gt;   brings character and warmth to living rooms, dining areas, and home<br>&gt; offices across the country.<br>&gt;<br>&gt;   Here&#x27;s how to bring the industrial look into your own home — without a<br>&gt; full renovation.<br>&gt;<br>&gt;   Start With the Right Materials<br>&gt;<br>&gt;   Industrial design is defined by its materials. Look for furniture that<br>&gt; features:<br>&gt;<br>&gt;   - Raw or reclaimed wood — Dining tables and shelving units made from<br>&gt; reclaimed timber instantly bring industrial character. The imperfections in<br>&gt; the wood — knots, grain<br>&gt;   variations, and weathered edges — are what make each piece unique.<br>&gt;   - Metal frames and accents — Iron, steel, and brushed metal legs on<br>&gt; tables, chairs, and shelving units are the backbone of the industrial look.<br>&gt; Black matte finishes work best,<br>&gt;    though aged brass and copper can add warmth.<br>&gt;   - Exposed hardware — Visible bolts, rivets, and welded joints celebrate<br>&gt; the construction process rather than hiding it. This is the opposite of<br>&gt; polished, high-gloss furniture<br>&gt;   — and that&#x27;s exactly the point.<br>&gt;<br>&gt;   Key Pieces to Anchor the Room<br>&gt;<br>&gt;   You don&#x27;t need to furnish an entire room in industrial style. A few<br>&gt; well-chosen pieces can set the tone while blending with what you already<br>&gt; own.<br>&gt;<br>&gt;   The Dining Table. A solid wood table with metal legs is the single most<br>&gt; impactful industrial piece you can buy. Pair it with mixed seating — metal<br>&gt; chairs on one side, a<br>&gt;   reclaimed wood bench on the other — for an authentic,<br>&gt; collected-over-time feel.<br>&gt;<br>&gt;   Open Shelving. Metal-frame bookcases or wall-mounted pipe shelving<br>&gt; replace bulky cabinets and keep the space feeling open. Use them to display<br>&gt; books, plants, and vintage finds<br>&gt;    alongside everyday items.<br>&gt;<br>&gt;   Statement Lighting. Pendant lights with metal shades, Edison bulb<br>&gt; fixtures, or cage-style lamps can transform a room on their own. Hang a<br>&gt; cluster of pendants over a kitchen<br>&gt;   island or dining table for maximum effect.<br>&gt;<br>&gt;   A Leather Accent Chair. Distressed leather in brown or tan tones pairs<br>&gt; perfectly with metal and wood. A vintage-style armchair or a tufted leather<br>&gt; sofa adds comfort without<br>&gt;   compromising the aesthetic.<br>&gt;<br>&gt;   Balancing Industrial With Liveable<br>&gt;<br>&gt;   The biggest mistake people make with industrial style is going too cold.<br>&gt; A room full of metal and concrete feels like a workshop, not a home. The<br>&gt; key is balance:<br>&gt;<br>&gt;   - Add textiles. Woven rugs, linen cushions, and knitted throws soften<br>&gt; hard surfaces and make seating areas inviting.<br>&gt;   - Bring in greenery. Plants are the easiest way to warm up an industrial<br>&gt; space. Large-leaf plants like monstera or fiddle-leaf fig work particularly<br>&gt; well against raw wood and<br>&gt;   metal.<br>&gt;   - Mix eras. Industrial furniture doesn&#x27;t have to match. A mid-century<br>&gt; modern sofa alongside a factory-style coffee table creates a layered,<br>&gt; lived-in look that feels<br>&gt;   intentional rather than rigid.<br>&gt;<br>&gt;   Where to Shop Smart<br>&gt;<br>&gt;   Getting the industrial look doesn&#x27;t require spending thousands on<br>&gt; bespoke pieces. Online furniture marketplaces now offer a wide range of<br>&gt; industrial-style furniture — from<br>&gt;   reclaimed wood dining tables to metal-frame shelving — at accessible<br>&gt; price points. The key is to look for solid construction and authentic<br>&gt; materials rather than printed-on<br>&gt;   finishes that try to mimic the look.<br>&gt;<br>&gt;   When shopping online, pay attention to:<br>&gt;<br>&gt;   - Material descriptions — Solid wood and real metal versus particleboard<br>&gt; with vinyl wrapping<br>&gt;   - Construction details — Welded joints and dovetail joinery last longer<br>&gt; than glued connections<br>&gt;   - Weight — Genuine industrial furniture tends to be heavier, which is<br>&gt; actually a sign of quality<br>&gt;<br>&gt;   The Bottom Line<br>&gt;<br>&gt;   Industrial style works because it celebrates honesty in design — real<br>&gt; materials, visible construction, and function-first thinking. You don&#x27;t<br>&gt; need to live in a converted<br>&gt;   warehouse to pull it off. A well-chosen dining table, a set of metal<br>&gt; shelves, and the right lighting can transform any room into a space with<br>&gt; character, warmth, and edge.<br>&gt;<br>&gt;   Start with one anchor piece, build around it, and let the room evolve<br>&gt; naturally. That&#x27;s the industrial way.<br>&gt;<br>&gt;   Author:  Shamiq is a Home &amp; Furniture Specialist at OJCommerce(<br>&gt; https://www.ojcommerce.com/), an online marketplace offering curated<br>&gt; furniture collections for every style and budget. When not researching<br>&gt; design<br>&gt;   trends, he&#x27;s helping homeowners find quality furniture without the<br>&gt; designer markup.<br>&gt;<br>&gt;   I have high-resolution images (JPG, 1200px+) ready to accompany this<br>&gt; article. Happy to send them over if you&#x27;d like to move forward.<br>&gt;<br>&gt;</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Lonny</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">submissions@lonny.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-03-11 16:51</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Thank you for contacting Lonny! Re: Pitch: Mixing High and Low — Affordable Furniture That Looks Designer</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Thank you so much for your interest in publishing with Lonny! We are honored that you thought of us and can&#x27;t wait to take a peek at your project. <br>Due to the volume of inquiries we receive daily, unfortunately we are not able to respond directly to each pitch. Rest assured that we do check this account daily, and will absolutely be in touch if your pitch is a good fit for our publication. <br>Thanks again for your interest and support! It means a lot. <br>Sincerely, Michelle and the team at Lonny</div>
+          </div>
+        </div>
+  </div>
+
+  <p class="updated">Last updated: Mar 11, 2026 at 04:51 PM</p>
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.closest('.tab-btn').classList.add('active');
+}
+</script>
+</body>
+</html>

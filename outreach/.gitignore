@@ -1,0 +1,6 @@
+.env
+.monitor_pid
+.monitor_seen_ids
+monitor.log
+sent_log.csv
+__pycache__/
