@@ -86,13 +86,13 @@
 
 <div class="header">
   <h1>OJCommerce Outreach Dashboard (Month 1)</h1>
-  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 04:50 PM)</span></p>
+  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 04:57 PM)</span></p>
   <div class="stats">
     <div class="stat"><div class="num green">40</div><div class="lbl">Total Prospects</div></div>
     <div class="stat"><div class="num blue">17</div><div class="lbl">Pitched</div></div>
     <div class="stat"><div class="num green">23</div><div class="lbl">Emails Sent</div></div>
     <div class="stat"><div class="num red">0</div><div class="lbl">Failed</div></div>
-    <div class="stat"><div class="num yellow">2</div><div class="lbl">Replied</div></div>
+    <div class="stat"><div class="num yellow">3</div><div class="lbl">Replied</div></div>
     <div class="stat"><div class="num green">0</div><div class="lbl">Accepted</div></div>
     <div class="stat"><div class="num purple">0</div><div class="lbl">Published</div></div>
   </div>
@@ -102,8 +102,8 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
-    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">30</span></button>
-    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">2</span></button>
+    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">31</span></button>
+    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">3</span></button>
   </div>
 
   <div class="panel active" id="panel-tier1">
@@ -164,8 +164,8 @@
             <td style="font-size:12px;">DIY, Furniture</td>
             <td style="font-size:12px;">Freelance Pitch/Product Reviews</td>
             <td style="font-size:12px;">contact@thisoldhouse.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
-            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:41 — hostinger-sent</div></td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-11 16:41 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-11 16:58 — reply-detected</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">7</td>
             <td><strong style="color:#0a1628;">Apartment Therapy</strong><br><a href="https://apartmenttherapy.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">apartmenttherapy.com</a></td>
@@ -496,6 +496,12 @@
           <th>Time</th><th>Prospect</th><th>Template</th><th>Email</th><th>Result</th>
         </tr></thead>
         <tbody><tr>
+            <td style="font-size:12px;color:#555;">2026-03-11 16:58</td>
+            <td style="font-size:12px;"><strong>This Old House</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">support@thisoldhouse.zendesk.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
             <td style="font-size:12px;color:#555;">2026-03-11 16:41</td>
             <td style="font-size:12px;"><strong>Curbed</strong></td>
             <td style="font-size:12px;">hostinger-sent</td>
@@ -609,12 +615,6 @@
             <td style="font-size:12px;">hostinger-sent</td>
             <td style="font-size:12px;">edit@dwell.com</td>
             <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
-        </tr><tr>
-            <td style="font-size:12px;color:#555;">2026-03-09 11:11</td>
-            <td style="font-size:12px;"><strong>Home & Design Magazine</strong></td>
-            <td style="font-size:12px;">hostinger-sent</td>
-            <td style="font-size:12px;">editorial@homeanddesign.com</td>
-            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
         </tr></tbody>
       </table>
     </div>
@@ -622,6 +622,23 @@
 
   <div class="panel" id="panel-replies">
     
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">This Old House</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">support@thisoldhouse.zendesk.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-03-11 16:58</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">[Request received]</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Hi shamiq@bygweb.com,<br><br>We&#x27;re here to help! A member of our customer support team will be in touch soon. If you want to tell us more about the issue, reply to this email.<br><br>Sincerely,<br>This Old House Customer Support</div>
+          </div>
+        </div>
         <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
           <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
             <div>
@@ -658,7 +675,7 @@
         </div>
   </div>
 
-  <p class="updated">Last updated: Mar 11, 2026 at 04:51 PM</p>
+  <p class="updated">Last updated: Mar 11, 2026 at 04:58 PM</p>
 </div>
 
 <script>

@@ -333,10 +333,16 @@ def check_inbox_replies(imap, prospect_emails, seen_ids):
 
     # Build domain-to-site mapping for matching auto-replies from different addresses
     domain_to_site = {}
+    # Also build site_url-based keyword matching for Zendesk/third-party replies
+    site_keywords = {}
     for addr, site_name in prospect_emails.items():
         domain = addr.split("@")[-1] if "@" in addr else ""
         if domain:
             domain_to_site[domain] = site_name
+            # Extract base domain keyword (e.g. "thisoldhouse" from "thisoldhouse.com")
+            base = domain.split(".")[0]
+            if len(base) > 3:  # skip short generic domains
+                site_keywords[base] = site_name
 
     for msg_id in recent_ids:
         msg_id_str = "inbox-" + msg_id.decode()
@@ -364,6 +370,13 @@ def check_inbox_replies(imap, prospect_emails, seen_ids):
         # Check 2: domain match (catches auto-replies from noreply@, submissions@, etc.)
         elif from_domain in domain_to_site:
             site_name = domain_to_site[from_domain]
+        # Check 3: keyword match in from_domain (catches Zendesk/third-party auto-replies
+        # e.g. support@thisoldhouse.zendesk.com matches "thisoldhouse")
+        else:
+            for keyword, sname in site_keywords.items():
+                if keyword in from_domain:
+                    site_name = sname
+                    break
 
         if site_name:
             # Fetch full message to get body content
