@@ -96,10 +96,12 @@ def generate_dashboard():
     total = len(prospects)
     tier1 = [p for p in prospects if p.get("tier") == "1"]
     tier2 = [p for p in prospects if p.get("tier") == "2"]
-    pitched = sum(1 for p in prospects if p.get("status") not in ("Not Started", ""))
+    pitched = sum(1 for p in prospects if p.get("status") == "Pitched")
     sent_count = sum(1 for e in sent_log if e.get("status") == "sent")
     failed_count = sum(1 for e in sent_log if e.get("status") == "failed")
-    replied = sum(1 for p in prospects if p.get("status") == "Replied")
+    bounced = sum(1 for p in prospects if p.get("status") == "Bounced")
+    replied = sum(1 for p in prospects if p.get("status") in ("Replied", "Rejected"))
+    rejected = sum(1 for p in prospects if p.get("status") == "Rejected")
     accepted = sum(1 for p in prospects if p.get("status") == "Accepted")
     published = sum(1 for p in prospects if p.get("status") == "Published")
 
@@ -317,6 +319,7 @@ def generate_dashboard():
     <div class="stat"><div class="num blue">{pitched}</div><div class="lbl">Pitched</div></div>
     <div class="stat"><div class="num green">{sent_count}</div><div class="lbl">Emails Sent</div></div>
     <div class="stat"><div class="num red">{failed_count}</div><div class="lbl">Failed</div></div>
+    <div class="stat" style="border:1px solid rgba(249,115,22,0.3);"><div class="num" style="color:#f97316;">{bounced}</div><div class="lbl">Bounced</div></div>
     <div class="stat"><div class="num yellow">{replied}</div><div class="lbl">Replied</div></div>
     <div class="stat"><div class="num green">{accepted}</div><div class="lbl">Accepted</div></div>
     <div class="stat"><div class="num purple">{published}</div><div class="lbl">Published</div></div>
