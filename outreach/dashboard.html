@@ -86,7 +86,7 @@
 
 <div class="header">
   <h1>OJCommerce Outreach Dashboard (Month 1)</h1>
-  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 06:07 PM)</span></p>
+  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#ef4444;font-weight:700;">&#9679; Monitor: Offline</span> <span style="color:#a0c4ff;font-size:12px;">(Run: python3 email_monitor.py --watch)</span></p>
   <div class="stats">
     <div class="stat"><div class="num green">40</div><div class="lbl">Total Prospects</div></div>
     <div class="stat"><div class="num blue">20</div><div class="lbl">Pitched</div></div>
@@ -102,8 +102,8 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
-    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">36</span></button>
-    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">3</span></button>
+    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">37</span></button>
+    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">4</span></button>
   </div>
 
   <div class="panel active" id="panel-tier1">
@@ -373,8 +373,8 @@
             <td style="font-size:12px;">Real Estate</td>
             <td style="font-size:12px;">Guest Contributor</td>
             <td style="font-size:12px;">contributors@inman.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
-            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:46 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-16 15:35 — followup-shamiq</div></td>
+            <td><span style="color:#ef4444;background:#fef2f2;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Rejected</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-09 11:46 — hostinger-sent</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-16 15:35 — followup-shamiq</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-16 21:10 — reply-detected</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">9</td>
             <td><strong style="color:#0a1628;">HuffPost Home</strong><br><a href="https://huffpost.com/section/home" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">huffpost.com/section/home</a></td>
@@ -496,6 +496,12 @@
           <th>Time</th><th>Prospect</th><th>Template</th><th>Email</th><th>Result</th>
         </tr></thead>
         <tbody><tr>
+            <td style="font-size:12px;color:#555;">2026-03-16 21:10</td>
+            <td style="font-size:12px;"><strong>Inman</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">dani@inman.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
             <td style="font-size:12px;color:#555;">2026-03-16 15:35</td>
             <td style="font-size:12px;"><strong>Forbes Home</strong></td>
             <td style="font-size:12px;">followup-a.saima</td>
@@ -609,12 +615,6 @@
             <td style="font-size:12px;">hostinger-sent</td>
             <td style="font-size:12px;">lizzy.francis@apartmenttherapy.com</td>
             <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
-        </tr><tr>
-            <td style="font-size:12px;color:#555;">2026-03-11 16:41</td>
-            <td style="font-size:12px;"><strong>This Old House</strong></td>
-            <td style="font-size:12px;">hostinger-sent</td>
-            <td style="font-size:12px;">contact@thisoldhouse.com</td>
-            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
         </tr></tbody>
       </table>
     </div>
@@ -622,6 +622,23 @@
 
   <div class="panel" id="panel-replies">
     
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Inman</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">dani@inman.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-03-16 21:10</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Re: Contributor Application — Home Furniture &amp; Decor Expert</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Hi Shamiqe, Thanks for reaching out. Unfortunately, we try to keep our contributor program reserved for agents, teams and brokers, and those who aren&#x27;t with companies that market services to agents and brokers. But thank you for reaching out!</div>
+          </div>
+        </div>
         <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
           <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
             <div>
@@ -636,7 +653,7 @@
           </div>
           <div style="padding:16px 20px;">
             <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
-            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Hi shamiq@bygweb.com,<br><br>We&#x27;re here to help! A member of our customer support team will be in touch soon. If you want to tell us more about the issue, reply to this email.<br><br>Sincerely,<br>This Old House Customer Support</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Hi shamiq@bygweb.com,<br><br>We&#x27;re here to help! A member of our customer support team will be in touch soon. If you want to tell us more about the issue, reply to this email.<br><br>Sincerely,<br>This Old House Customer Support</div>
           </div>
         </div>
         <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
@@ -670,12 +687,12 @@
           </div>
           <div style="padding:16px 20px;">
             <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
-            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Thank you so much for your interest in publishing with Lonny! We are honored that you thought of us and can&#x27;t wait to take a peek at your project. <br>Due to the volume of inquiries we receive daily, unfortunately we are not able to respond directly to each pitch. Rest assured that we do check this account daily, and will absolutely be in touch if your pitch is a good fit for our publication. <br>Thanks again for your interest and support! It means a lot. <br>Sincerely, Michelle and the team at Lonny</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Thank you so much for your interest in publishing with Lonny! We are honored that you thought of us and can&#x27;t wait to take a peek at your project. <br>Due to the volume of inquiries we receive daily, unfortunately we are not able to respond directly to each pitch. Rest assured that we do check this account daily, and will absolutely be in touch if your pitch is a good fit for our publication. <br>Thanks again for your interest and support! It means a lot. <br>Sincerely, Michelle and the team at Lonny</div>
           </div>
         </div>
   </div>
 
-  <p class="updated">Last updated: Mar 16, 2026 at 03:40 PM</p>
+  <p class="updated">Last updated: Mar 17, 2026 at 11:00 AM</p>
 </div>
 
 <script>
