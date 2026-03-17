@@ -96,7 +96,7 @@ def generate_dashboard():
     total = len(prospects)
     tier1 = [p for p in prospects if p.get("tier") == "1"]
     tier2 = [p for p in prospects if p.get("tier") == "2"]
-    pitched = sum(1 for p in prospects if p.get("status") == "Pitched")
+    pitched = sum(1 for p in prospects if p.get("status") not in ("Not Started", ""))
     sent_count = sum(1 for e in sent_log if e.get("status") == "sent")
     failed_count = sum(1 for e in sent_log if e.get("status") == "failed")
     bounced = sum(1 for p in prospects if p.get("status") == "Bounced")
