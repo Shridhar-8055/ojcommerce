@@ -55,3 +55,6 @@ timestamp,site_name,email,template,status,error
 2026-03-17T10:00:00,Decoist,contact@decoist.com,followup2-a.saima,sent,
 2026-03-17T12:00:00,Hunker,staff@hunker.com,followup2-a.saima,sent,
 2026-03-17T14:00:00,Forbes Home,ideas@forbes.com,followup2-a.saima,sent,
+2026-03-17T16:00:00,Trendir,contact@trendir.com,manual-shamiq,sent,
+2026-03-17T18:00:00,Realtor.com Magazine,feedback@move.com,manual-shamiq,sent,
+2026-03-17T16:00:00,MyDomaine,dotdashbrands@dotdash.com,manual-a.saima,sent,
