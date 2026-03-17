@@ -13,7 +13,7 @@ timestamp,site_name,email,template,status,error
 2026-03-09T11:46:54,Inman,contributors@inman.com,hostinger-sent,sent,
 2026-03-09T11:46:54,The Spruce,pitch@thespruce.com,hostinger-sent,sent,
 2026-03-09T11:46:54,Family Handyman,submissions@familyhandyman.com,hostinger-sent,sent,
-2026-03-11T16:36:52,Remodelista,editorial@remodelista.com,hostinger-sent,sent,
+2026-03-11T16:36:52,Remodelista,editorial@remodelista.com,hostinger-sent,failed,550 5.4.1 recipient rejected
 2026-03-11T16:36:52,Bob Vila,contact@bobvila.com,hostinger-sent,sent,
 2026-03-11T16:41:54,This Old House,contact@thisoldhouse.com,hostinger-sent,sent,
 2026-03-11T16:41:54,Apartment Therapy,lizzy.francis@apartmenttherapy.com,hostinger-sent,sent,
@@ -26,12 +26,12 @@ timestamp,site_name,email,template,status,error
 2026-03-16T15:35:06,HuffPost Home,pitch@huffpost.com,followup-shamiq,sent,
 2026-03-16T15:35:06,Inman,contributors@inman.com,followup-shamiq,sent,
 2026-03-16T15:35:06,Family Handyman,submissions@familyhandyman.com,followup-shamiq,sent,
-2026-03-16T15:35:06,The Spruce,pitch@thespruce.com,followup-shamiq,sent,
+2026-03-16T15:35:06,The Spruce,pitch@thespruce.com,followup-shamiq,failed,550-5.1.1 email does not exist
 2026-03-16T15:35:06,Bob Vila,contact@bobvila.com,followup-shamiq,sent,
 2026-03-16T15:35:06,This Old House,contact@thisoldhouse.com,followup-shamiq,sent,
 2026-03-16T15:35:06,Apartment Therapy,lizzy.francis@apartmenttherapy.com,followup-shamiq,sent,
-2026-03-16T15:35:06,Curbed,curbed@nymag.com,followup-shamiq,sent,
-2026-03-16T15:35:06,Remodelista,editorial@remodelista.com,followup-shamiq,sent,
+2026-03-16T15:35:06,Curbed,curbed@nymag.com,followup-shamiq,failed,550-5.1.1 email does not exist
+2026-03-16T15:35:06,Remodelista,editorial@remodelista.com,followup-shamiq,failed,550 5.4.1 recipient rejected
 2026-03-16T15:35:06,Decoist,contact@decoist.com,followup-a.saima,sent,
 2026-03-16T15:35:06,Hunker,staff@hunker.com,followup-a.saima,sent,
 2026-03-16T15:35:06,Forbes Home,ideas@forbes.com,followup-a.saima,sent,
@@ -42,16 +42,16 @@ timestamp,site_name,email,template,status,error
 2026-03-16T11:00:00,Elle Decor,elledecor@hearst.com,manual-a.saima,sent,
 2026-03-16T13:00:00,Better Homes & Gardens,bhgeditor@meredith.com,manual-a.saima,sent,
 2026-03-16T15:00:00,Houzz,editor@houzz.com,manual-a.saima,sent,
-2026-03-17T09:00:00,Architectural Digest,Sydney_Gore@condenast.com,manual-shamiq,sent,
+2026-03-17T09:00:00,Architectural Digest,Sydney_Gore@condenast.com,manual-shamiq,failed,550-5.1.1 address not found
 2026-03-17T11:00:00,Veranda,veranda@hearst.com,manual-shamiq,sent,
-2026-03-17T13:00:00,Real Simple,letters@realsimple.com,manual-shamiq,sent,
+2026-03-17T13:00:00,Real Simple,letters@realsimple.com,manual-shamiq,failed,550-5.1.1 email does not exist
 2026-03-17T15:00:00,Dezeen,press@dezeen.com,manual-shamiq,sent,
 2026-03-17T17:00:00,Martha Stewart,mslletters@meredith.com,manual-shamiq,failed,550-5.1.1 email does not exist
 2026-03-17T09:00:00,Chairish Blog,press@chairish.com,manual-a.saima,sent,
 2026-03-17T11:00:00,Fine Homebuilding,fh@taunton.com,manual-a.saima,sent,
 2026-03-17T13:00:00,Traditional Home,traditionalhome@meredith.com,manual-a.saima,sent,
 2026-03-17T15:00:00,Architectural Record,arcallforentries@bnpmedia.com,manual-a.saima,sent,
-2026-03-17T17:00:00,ArchDaily,submit@archdaily.com,manual-a.saima,sent,
+2026-03-17T17:00:00,ArchDaily,submit@archdaily.com,manual-a.saima,failed,550-5.1.1 email does not exist
 2026-03-17T10:00:00,Decoist,contact@decoist.com,followup2-a.saima,sent,
 2026-03-17T12:00:00,Hunker,staff@hunker.com,followup2-a.saima,sent,
 2026-03-17T14:00:00,Forbes Home,ideas@forbes.com,followup2-a.saima,sent,

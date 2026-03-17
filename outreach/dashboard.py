@@ -111,6 +111,7 @@ def generate_dashboard():
         "Accepted": ("#10b981", "#d1fae5"),
         "Rejected": ("#ef4444", "#fef2f2"),
         "Published": ("#8b5cf6", "#f5f3ff"),
+        "Bounced": ("#f97316", "#fff7ed"),
     }
 
     def status_badge(status):
