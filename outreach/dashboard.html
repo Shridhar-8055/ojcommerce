@@ -93,7 +93,7 @@
     <div class="stat"><div class="num green">82</div><div class="lbl">Emails Sent</div></div>
     <div class="stat"><div class="num red">8</div><div class="lbl">Failed</div></div>
     <div class="stat" style="border:1px solid rgba(249,115,22,0.3);"><div class="num" style="color:#f97316;">0</div><div class="lbl">Bounced</div></div>
-    <div class="stat"><div class="num yellow">4</div><div class="lbl">Replied</div></div>
+    <div class="stat"><div class="num yellow">5</div><div class="lbl">Replied</div></div>
     <div class="stat"><div class="num green">0</div><div class="lbl">Accepted</div></div>
     <div class="stat"><div class="num purple">0</div><div class="lbl">Published</div></div>
   </div>
@@ -103,8 +103,8 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
-    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">94</span></button>
-    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">4</span></button>
+    <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">95</span></button>
+    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">5</span></button>
   </div>
 
   <div class="panel active" id="panel-tier1">
@@ -138,8 +138,8 @@
             <td style="font-size:12px;">Home Decor, Design</td>
             <td style="font-size:12px;">PR/Product</td>
             <td style="font-size:12px;">editor@remodelista.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
-            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#10060; 2026-03-11 16:36 — hostinger-sent <span style="color:#ef4444;">(550 5.4.1 recipient rejected)</span></div><div style="font-size:11px;color:#555;margin:2px 0;">&#10060; 2026-03-16 15:35 — followup-shamiq <span style="color:#ef4444;">(550 5.4.1 recipient rejected)</span></div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-23 10:00 — retry-a.saima</div></td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
+            <td><div style="font-size:11px;color:#555;margin:2px 0;">&#10060; 2026-03-11 16:36 — hostinger-sent <span style="color:#ef4444;">(550 5.4.1 recipient rejected)</span></div><div style="font-size:11px;color:#555;margin:2px 0;">&#10060; 2026-03-16 15:35 — followup-shamiq <span style="color:#ef4444;">(550 5.4.1 recipient rejected)</span></div><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-03-23 10:00 — retry-a.saima</div><div style="font-size:11px;color:#555;margin:2px 0;">&#9898; 2026-03-23 13:21 — reply-detected</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">4</td>
             <td><strong style="color:#0a1628;">Family Handyman</strong><br><a href="https://familyhandyman.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">familyhandyman.com</a></td>
@@ -503,6 +503,12 @@
             <td style="font-size:12px;">contributions@archdaily.com</td>
             <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
         </tr><tr>
+            <td style="font-size:12px;color:#555;">2026-03-23 13:21</td>
+            <td style="font-size:12px;"><strong>Remodelista</strong></td>
+            <td style="font-size:12px;">reply-detected</td>
+            <td style="font-size:12px;">reader-projects@remodelista.com</td>
+            <td style="font-size:12px;color:#94a3b8;font-weight:700;">&#9898; replied</td>
+        </tr><tr>
             <td style="font-size:12px;color:#555;">2026-03-23 10:00</td>
             <td style="font-size:12px;"><strong>Remodelista</strong></td>
             <td style="font-size:12px;">retry-a.saima</td>
@@ -610,12 +616,6 @@
             <td style="font-size:12px;">followup2-a.saima</td>
             <td style="font-size:12px;">pitch@huffpost.com</td>
             <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
-        </tr><tr>
-            <td style="font-size:12px;color:#555;">2026-03-23 09:00</td>
-            <td style="font-size:12px;"><strong>Apartment Therapy</strong></td>
-            <td style="font-size:12px;">followup2-a.saima</td>
-            <td style="font-size:12px;">lizzy.francis@apartmenttherapy.com</td>
-            <td style="font-size:12px;color:#10b981;font-weight:700;">&#9989; sent</td>
         </tr></tbody>
       </table>
     </div>
@@ -623,6 +623,23 @@
 
   <div class="panel" id="panel-replies">
     
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Remodelista</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">reader-projects@remodelista.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-03-23 13:21</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Thank you for your project submission</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Thank you for submitting your project to Remodelista. We review submissions periodically and will be in touch if your project is of interest.</div>
+          </div>
+        </div>
         <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
           <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
             <div>
@@ -693,7 +710,7 @@
         </div>
   </div>
 
-  <p class="updated">Last updated: Mar 23, 2026 at 02:05 PM</p>
+  <p class="updated">Last updated: Mar 23, 2026 at 02:08 PM</p>
 </div>
 
 <script>

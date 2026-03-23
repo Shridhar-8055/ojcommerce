@@ -92,4 +92,5 @@ timestamp,site_name,email,template,status,error
 2026-03-23T10:00:00,Real Simple,melissa.matthews@dotdashmdp.com,retry-shamiq,sent,
 2026-03-23T10:00:00,Curbed,sukjong@curbed.com,retry-shamiq,sent,
 2026-03-23T10:00:00,Remodelista,editor@remodelista.com,retry-a.saima,sent,
+2026-03-23T13:21:00,Remodelista,reader-projects@remodelista.com,reply-detected,replied,
 2026-03-23T10:00:00,ArchDaily,contributions@archdaily.com,retry-a.saima,sent,
