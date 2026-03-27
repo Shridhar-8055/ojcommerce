@@ -116,3 +116,4 @@ timestamp,site_name,email,template,status,error
 2026-03-29T13:00:00,The Spruce,kmckenna@dotdashmeredith.com,followup-retry-shamiq,sent,
 2026-03-29T11:00:00,Curbed,sukjong@curbed.com,followup-retry-a.saima,sent,
 2026-03-29T13:00:00,ArchDaily,contributions@archdaily.com,followup-retry-a.saima,sent,
+2026-03-27T10:00:00,Houzz,editor@houzz.com,reply-detected,replied,
