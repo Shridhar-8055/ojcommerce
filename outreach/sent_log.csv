@@ -119,3 +119,5 @@ timestamp,site_name,email,template,status,error
 2026-03-27T10:00:00,Houzz,editor@houzz.com,reply-detected,replied,
 2026-03-27T15:00:00,Houzz,editor@houzz.com,credentials-reply-a.saima,sent,
 2026-04-04T02:26:00,Houzz,editor@houzz.com,reply-detected,replied,
+2026-03-27T15:30:00,Medium Article 1,medium.com/@shamique_42041,published-industrial-style-furniture,sent,
+2026-03-27T15:45:00,Medium Article 2,medium.com/@shamique_42041,published-living-room-furniture-guide,sent,
