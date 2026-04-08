@@ -101,7 +101,7 @@ def generate_dashboard():
     sent_count = sum(1 for e in sent_log if e.get("status") == "sent")
     failed_count = sum(1 for e in sent_log if e.get("status") == "failed")
     bounced = sum(1 for p in prospects if p.get("status") == "Bounced")
-    replied = len(replies_log)
+    replied = sum(1 for r in replies_log if r.get("type") != "auto-reply")
     rejected = sum(1 for p in prospects if p.get("status") == "Rejected")
     accepted = sum(1 for p in prospects if p.get("status") == "Accepted")
     published = sum(1 for p in prospects if p.get("status") == "Published")
