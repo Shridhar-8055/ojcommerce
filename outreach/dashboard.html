@@ -89,11 +89,11 @@
   <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 04:07 PM)</span></p>
   <div class="stats">
     <div class="stat"><div class="num green">60</div><div class="lbl">Total Prospects</div></div>
-    <div class="stat"><div class="num blue">59</div><div class="lbl">Pitched</div></div>
+    <div class="stat"><div class="num blue">55</div><div class="lbl">Pitched</div></div>
     <div class="stat"><div class="num green">132</div><div class="lbl">Emails Sent</div></div>
     <div class="stat"><div class="num red">8</div><div class="lbl">Failed</div></div>
     <div class="stat" style="border:1px solid rgba(249,115,22,0.3);"><div class="num" style="color:#f97316;">0</div><div class="lbl">Bounced</div></div>
-    <div class="stat"><div class="num yellow">5</div><div class="lbl">Replied</div></div>
+    <div class="stat"><div class="num yellow">9</div><div class="lbl">Replied</div></div>
     <div class="stat"><div class="num green">0</div><div class="lbl">Accepted</div></div>
     <div class="stat"><div class="num purple">0</div><div class="lbl">Published</div></div>
   </div>
@@ -105,7 +105,7 @@
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
     <button class="tab-btn" onclick="switchTab('tier3')">Tier 3 — DR 30-60 <span class="badge" style="background:#2E7D32;">20</span></button>
     <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">148</span></button>
-    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">8</span></button>
+    <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">12</span></button>
   </div>
 
   <div class="panel active" id="panel-tier1">
@@ -574,8 +574,8 @@
             <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">45</span></td>
             <td style="font-size:12px;">Renovation, Architecture</td>
             <td style="font-size:12px;">Guest Post</td>
-            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td style="font-size:12px;">info@bigposting.com</td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
             <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-04-08 13:00 — guest-post-pitch-shamiq</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">10</td>
@@ -611,7 +611,7 @@
             <td style="font-size:12px;">Furniture, Home Staging</td>
             <td style="font-size:12px;">Guest Post</td>
             <td style="font-size:12px;">contact@snoozye.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
             <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-04-08 10:30 — guest-post-pitch-a.saima</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">14</td>
@@ -620,7 +620,7 @@
             <td style="font-size:12px;">Home Decor, DIY</td>
             <td style="font-size:12px;">Guest Post</td>
             <td style="font-size:12px;">hookedhome1001@gmail.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
             <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-04-08 11:30 — guest-post-pitch-shamiq</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">15</td>
@@ -647,7 +647,7 @@
             <td style="font-size:12px;">Furniture, Interior Styling</td>
             <td style="font-size:12px;">Guest Post</td>
             <td style="font-size:12px;">admin@thediyhomedecor.com</td>
-            <td><span style="color:#0066FF;background:#e0f0ff;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Pitched</span></td>
+            <td><span style="color:#f59e0b;background:#fef3c7;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Replied</span></td>
             <td><div style="font-size:11px;color:#555;margin:2px 0;">&#9989; 2026-04-08 12:30 — guest-post-pitch-shamiq</div></td>
         </tr><tr>
             <td style="text-align:center;color:#94a3b8;font-weight:600;">18</td>
@@ -830,6 +830,74 @@
           <div style="padding:16px 20px;">
             <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
             <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;"><span style="color:#94a3b8;font-style:italic;">No body content available</span></div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">The DIY Home Decor</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">admin@thediyhomedecor.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-04-08 13:51</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Re: Guest Post Pitch: DIY Furniture Makeover — Transform Old Pieces on a Budget</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">We accept paid guest postings. New Guest Post: $8, Link Insertion: $10, 2 dofollow links per post, TAT: Instant. Payment: PayPal and local Pakistani bank. If you agree, send an article.</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Snoozye</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">contact@snoozye.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-04-08 12:09</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Re: Home Decor Guest Post — Home Staging With Affordable Furniture: A Sellers Guide</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Guest Post: $80 per post per link + 6% PayPal Fee ($40 per additional link). DA 50+, organic traffic 15K+. Link Insertion: $90 per link + 6% PayPal. Max 1 link per post. Content 1000+ words. No Gambling/Insurance/CBD. Contact: Will Haris, Content Marketing Associate.</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">Hooked Home</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">contact@hookedhome.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-04-08 12:10</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">Re: Guest Post Pitch: 5 Living Room Furniture Mistakes Everyone Makes</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Guest post price: $80 + 6% PayPal fee per post per link + $40 + 6% per additional link. Link Placement: $90 + 6% per link. DR 43, traffic 5K+. Publication TAT: 24 Hours. Content must be human written, above 1000 words, unique. No CBD/Casino/Gambling.</div>
+          </div>
+        </div>
+        <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg,#0a1628,#1a365d);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <strong style="font-size:16px;">MyFancyHouse</strong>
+              <span style="color:#a0c4ff;font-size:12px;margin-left:10px;">info@bigposting.com</span>
+            </div>
+            <span style="color:#a0c4ff;font-size:12px;">2026-04-08 11:26</span>
+          </div>
+          <div style="padding:16px 20px;border-bottom:1px solid #f0f0f0;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Subject</div>
+            <div style="font-size:14px;font-weight:600;color:#0a1628;">BIGPOSTING "Guest Post Submission: Luxury Living Room Looks Without the Luxury Price Tag"</div>
+          </div>
+          <div style="padding:16px 20px;">
+            <div style="font-size:12px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Message</div>
+            <div style="font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap;word-wrap:break-word;">Via Bigposting.com Portal — $39/post, Via Email — $49/post. MyFancyHouse (myfancyhouse.com), Home/architecture niche. TAT: 5 days.</div>
           </div>
         </div>
         <div style="background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.06);margin-bottom:16px;overflow:hidden;">
