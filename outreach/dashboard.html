@@ -86,9 +86,9 @@
 
 <div class="header">
   <h1>OJCommerce Outreach Dashboard (Month 1)</h1>
-  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#00C9A7;font-weight:700;">&#9679; Monitor: Connected</span> <span style="color:#a0c4ff;font-size:12px;">(Last check: 04:11 PM)</span></p>
+  <p class="sub">Email campaign tracker — auto-updated after every send &nbsp;|&nbsp; <span style="color:#ef4444;font-weight:700;">&#9679; Monitor: Offline</span> <span style="color:#a0c4ff;font-size:12px;">(Run: python3 email_monitor.py --watch)</span></p>
   <div class="stats">
-    <div class="stat"><div class="num green">40</div><div class="lbl">Total Prospects</div></div>
+    <div class="stat"><div class="num green">60</div><div class="lbl">Total Prospects</div></div>
     <div class="stat"><div class="num blue">39</div><div class="lbl">Pitched</div></div>
     <div class="stat"><div class="num green">107</div><div class="lbl">Emails Sent</div></div>
     <div class="stat"><div class="num red">8</div><div class="lbl">Failed</div></div>
@@ -103,6 +103,7 @@
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">20</span></button>
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">20</span></button>
+    <button class="tab-btn" onclick="switchTab('tier3')">Tier 3 — DR 30-60 <span class="badge" style="background:#2E7D32;">20</span></button>
     <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">122</span></button>
     <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">7</span></button>
   </div>
@@ -489,6 +490,197 @@
     </div>
   </div>
 
+  <div class="panel" id="panel-tier3">
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Website</th><th>DR</th><th>Niche</th><th>Opportunity</th><th>Email</th><th>Status</th><th>Send History</th>
+        </tr></thead>
+        <tbody><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">1</td>
+            <td><strong style="color:#0a1628;">The Global Hues</strong><br><a href="https://theglobalhues.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">theglobalhues.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">48</span></td>
+            <td style="font-size:12px;">Home Improvement, Renovation</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">info@theglobalhues.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">2</td>
+            <td><strong style="color:#0a1628;">Bob Mills Furniture</strong><br><a href="https://bobmillsfurniture.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">bobmillsfurniture.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">52</span></td>
+            <td style="font-size:12px;">Furniture, Home Design</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">3</td>
+            <td><strong style="color:#0a1628;">Archinomy</strong><br><a href="https://archinomy.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">archinomy.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">48</span></td>
+            <td style="font-size:12px;">Architecture, Interior Design</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">4</td>
+            <td><strong style="color:#0a1628;">HomeAdore</strong><br><a href="https://homeadore.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">homeadore.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">60</span></td>
+            <td style="font-size:12px;">Interior Design, Architecture</td>
+            <td style="font-size:12px;">Project Submission</td>
+            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">5</td>
+            <td><strong style="color:#0a1628;">Shine Your Light Blog</strong><br><a href="https://shineyourlightblog.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">shineyourlightblog.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">45</span></td>
+            <td style="font-size:12px;">DIY, Home Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">info@shineyourlightblog.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">6</td>
+            <td><strong style="color:#0a1628;">House Whirl</strong><br><a href="https://housewhirl.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">housewhirl.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">40</span></td>
+            <td style="font-size:12px;">Home Improvement, DIY</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">editor@housewhirl.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">7</td>
+            <td><strong style="color:#0a1628;">Interior Designer Trends</strong><br><a href="https://interiordesignertrends.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">interiordesignertrends.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">42</span></td>
+            <td style="font-size:12px;">Interior Design, Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">interiordesignertrends@gmail.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">8</td>
+            <td><strong style="color:#0a1628;">Opple House</strong><br><a href="https://opplehouse.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">opplehouse.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">42</span></td>
+            <td style="font-size:12px;">DIY, Decor, Organization</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">sophia@opplehouse.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">9</td>
+            <td><strong style="color:#0a1628;">MyFancyHouse</strong><br><a href="https://myfancyhouse.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">myfancyhouse.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">45</span></td>
+            <td style="font-size:12px;">Renovation, Architecture</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;"><span style="color:#ccc;">needs research</span></td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">10</td>
+            <td><strong style="color:#0a1628;">Repaired Homes</strong><br><a href="https://repairedhomes.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">repairedhomes.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">40</span></td>
+            <td style="font-size:12px;">Home Improvement, Furniture</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">admin@repairedhomes.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">11</td>
+            <td><strong style="color:#0a1628;">My Own Bali</strong><br><a href="https://myownbali.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">myownbali.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">42</span></td>
+            <td style="font-size:12px;">Furniture, Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">info@myownbali.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">12</td>
+            <td><strong style="color:#0a1628;">Kooihaus</strong><br><a href="https://kooihaus.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">kooihaus.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">38</span></td>
+            <td style="font-size:12px;">Decor, Minimalism</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">editor@kooihaus.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">13</td>
+            <td><strong style="color:#0a1628;">Snoozye</strong><br><a href="https://snoozye.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">snoozye.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">38</span></td>
+            <td style="font-size:12px;">Furniture, Home Staging</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">contact@snoozye.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">14</td>
+            <td><strong style="color:#0a1628;">Hooked Home</strong><br><a href="https://hookedhome.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">hookedhome.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">38</span></td>
+            <td style="font-size:12px;">Home Decor, DIY</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">hookedhome1001@gmail.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">15</td>
+            <td><strong style="color:#0a1628;">A Little Delightful</strong><br><a href="https://alittledelightful.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">alittledelightful.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">42</span></td>
+            <td style="font-size:12px;">Home Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">ZephyrParker@alittledelightful.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">16</td>
+            <td><strong style="color:#0a1628;">Propaura</strong><br><a href="https://propaura.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">propaura.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">38</span></td>
+            <td style="font-size:12px;">Real Estate, Home Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">info@propaura.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">17</td>
+            <td><strong style="color:#0a1628;">The DIY Home Decor</strong><br><a href="https://thediyhomedecor.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">thediyhomedecor.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">35</span></td>
+            <td style="font-size:12px;">Furniture, Interior Styling</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">admin@thediyhomedecor.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">18</td>
+            <td><strong style="color:#0a1628;">WillyHomes</strong><br><a href="https://willyhomes.com" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">willyhomes.com</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">35</span></td>
+            <td style="font-size:12px;">Home Improvement, Decor</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">admin@willyhomes.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">19</td>
+            <td><strong style="color:#0a1628;">Home Base Project</strong><br><a href="https://homebaseproject.org" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">homebaseproject.org</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">30</span></td>
+            <td style="font-size:12px;">Home Decor, DIY</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">stiffen.homebaseproject@gmail.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr><tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">20</td>
+            <td><strong style="color:#0a1628;">CityFurnish Blog</strong><br><a href="https://cityfurnish.com/blog" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">cityfurnish.com/blog</a></td>
+            <td><span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">48</span></td>
+            <td style="font-size:12px;">Furniture, Lifestyle</td>
+            <td style="font-size:12px;">Guest Post</td>
+            <td style="font-size:12px;">alpana@cityfurnish.com</td>
+            <td><span style="color:#94a3b8;background:#f1f5f9;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">Not Started</span></td>
+            <td><span style="color:#94a3b8;font-size:12px;">—</span></td>
+        </tr></tbody>
+      </table>
+    </div>
+  </div>
+
   <div class="panel" id="panel-log">
     <div class="card">
       <div class="card-title">Recent Activity (Last 20)</div>
@@ -744,7 +936,7 @@
         </div>
   </div>
 
-  <p class="updated">Last updated: Apr 06, 2026 at 04:14 PM</p>
+  <p class="updated">Last updated: Apr 08, 2026 at 11:00 AM</p>
 </div>
 
 <script>

@@ -96,6 +96,7 @@ def generate_dashboard():
     total = len(prospects)
     tier1 = [p for p in prospects if p.get("tier") == "1"]
     tier2 = [p for p in prospects if p.get("tier") == "2"]
+    tier3 = [p for p in prospects if p.get("tier") == "3"]
     pitched = sum(1 for p in prospects if p.get("status") not in ("Not Started", ""))
     sent_count = sum(1 for e in sent_log if e.get("status") == "sent")
     failed_count = sum(1 for e in sent_log if e.get("status") == "failed")
@@ -123,6 +124,8 @@ def generate_dashboard():
     def dr_badge(dr, tier):
         if tier == "1":
             return f'<span style="background:#FFF8E1;color:#B8860B;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">{dr}</span>'
+        elif tier == "3":
+            return f'<span style="background:#E8F5E9;color:#2E7D32;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">{dr}</span>'
         return f'<span style="background:#E8F4FD;color:#0066FF;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;">{dr}</span>'
 
     def log_entries_html(site_name):
@@ -162,6 +165,19 @@ def generate_dashboard():
             <td style="text-align:center;color:#94a3b8;font-weight:600;">{i}</td>
             <td><strong style="color:#0a1628;">{p['site_name']}</strong><br><a href="https://{p['site_url']}" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">{p['site_url']}</a></td>
             <td>{dr_badge(p['dr'], '2')}</td>
+            <td style="font-size:12px;">{p['niche']}</td>
+            <td style="font-size:12px;">{p['opportunity_type']}</td>
+            <td style="font-size:12px;">{p.get('contact_email') or '<span style="color:#ccc;">needs research</span>'}</td>
+            <td>{status_badge(p['status'])}</td>
+            <td>{log_entries_html(p['site_name'])}</td>
+        </tr>"""
+
+    tier3_rows = ""
+    for i, p in enumerate(tier3, 1):
+        tier3_rows += f"""<tr>
+            <td style="text-align:center;color:#94a3b8;font-weight:600;">{i}</td>
+            <td><strong style="color:#0a1628;">{p['site_name']}</strong><br><a href="https://{p['site_url']}" target="_blank" rel="noopener noreferrer" style="color:#0066FF;font-size:12px;text-decoration:none;cursor:pointer;" onclick="window.open(this.href);return false;">{p['site_url']}</a></td>
+            <td>{dr_badge(p['dr'], '3')}</td>
             <td style="font-size:12px;">{p['niche']}</td>
             <td style="font-size:12px;">{p['opportunity_type']}</td>
             <td style="font-size:12px;">{p.get('contact_email') or '<span style="color:#ccc;">needs research</span>'}</td>
@@ -330,6 +346,7 @@ def generate_dashboard():
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('tier1')">Tier 1 — DR 80+ <span class="badge">{len(tier1)}</span></button>
     <button class="tab-btn" onclick="switchTab('tier2')">Tier 2 — DR 60-80 <span class="badge">{len(tier2)}</span></button>
+    <button class="tab-btn" onclick="switchTab('tier3')">Tier 3 — DR 30-60 <span class="badge" style="background:#2E7D32;">{len(tier3)}</span></button>
     <button class="tab-btn" onclick="switchTab('log')">Activity Log <span class="badge">{len(sent_log)}</span></button>
     <button class="tab-btn" onclick="switchTab('replies')">Replies <span class="badge" style="background:#f59e0b;">{len(replies_log)}</span></button>
   </div>
@@ -352,6 +369,17 @@ def generate_dashboard():
           <th>#</th><th>Website</th><th>DR</th><th>Niche</th><th>Opportunity</th><th>Email</th><th>Status</th><th>Send History</th>
         </tr></thead>
         <tbody>{tier2_rows}</tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-tier3">
+    <div class="card">
+      <table>
+        <thead><tr>
+          <th>#</th><th>Website</th><th>DR</th><th>Niche</th><th>Opportunity</th><th>Email</th><th>Status</th><th>Send History</th>
+        </tr></thead>
+        <tbody>{tier3_rows}</tbody>
       </table>
     </div>
   </div>
